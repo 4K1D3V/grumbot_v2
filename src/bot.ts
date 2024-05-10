@@ -37,7 +37,7 @@ app.listen(port, () => {
 })
 
 //Message Create Events
-const ownerUserIds: String[] = ["1216042650096898189n"];
+const ownerUserIds: String[] = ["1216042650096898189"];
 client.on('messageCreate', async (message) => {
     if (message.author.bot) return;
     if (message.content.toLowerCase() === "!deploy-commands") {
