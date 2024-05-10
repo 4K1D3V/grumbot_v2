@@ -3,9 +3,21 @@
   "version": "1.0.0",
   "main": "bot.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "build": "tsup src/index.ts --minify"
   },
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "author": "Sarthak",
+  "license": "MIT",
+  "description": "Grumbot, but with Typescript",
+  "dependencies": {
+    "discord.js": "^14.15.2",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.2",
+    "tsx": "^4.9.3",
+    "typescript": "^5.4.5"
+  }
 }
