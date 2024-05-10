@@ -17,7 +17,8 @@
     "discord.js": "^14.15.2",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "random-jokes-api": "^1.5.9"
+    "random-jokes-api": "^1.5.9",
+    "servius": "^1.1.4"
   },
   "devDependencies": {
     "tsup": "^8.0.2",
