@@ -41,10 +41,9 @@ const ownerUserIds: String[] = ["1216042650096898189"];
 client.on('messageCreate', async (message) => {
     if (message.author.bot) return;
     if (message.content.toLowerCase() === "!deploy-commands") {
-        if (ownerUserIds.includes(message.author.id) ) {
+        if (ownerUserIds.includes(message.author.id)) {
             await deployCommands();
             message.reply("Commands deployed!");
         } else message.reply("You do not have permission to do this!");
-
     }
 })
