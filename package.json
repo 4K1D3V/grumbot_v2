@@ -5,8 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx watch src/bot.ts",
-    "start": "node dist/index.js",
-    "build": "tsup src/index.ts --minify"
+    "start": "node dist/bot.js",
+    "build": "tsup src/bot.ts --minify"
   },
   "author": "Sarthak",
   "license": "MIT",
