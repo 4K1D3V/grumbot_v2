@@ -25,12 +25,12 @@ export async function execute(interaction: CommandInteraction) {
         data: {
             from_lang: 'auto',
             to_lang: 'english',
-            text: `${interaction.options.get('text')}`
+            text: `${interaction.options.get('text')?.value}`
         }
     };
     try {
         const response: AxiosResponse = await axios.request(options);
-        await interaction.editReply(`Translation of '${interaction.options.get('text')}' is - '${response.data.Response}'`);
+        await interaction.editReply(`Translation of '${interaction.options.get('text')?.value}' is - '${response.data.Response}'`);
     } catch (err) {
         console.log(err);
     }
