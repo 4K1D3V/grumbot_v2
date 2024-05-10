@@ -19,7 +19,7 @@ export const data = new SlashCommandBuilder()
     );
 
 export async function execute(interaction: CommandInteraction) {
-    await interaction.deferReply()
+    await interaction.deferReply();
     const choice = interaction.options.get('type')?.value;
     const response = await getQuestion(choice);
     const typeOfQuestion = response.type === "wyr" ? "Would You Rather" : response.type === "nhie" ? "Never Have I Ever" : response.type;
