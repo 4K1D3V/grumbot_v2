@@ -2,6 +2,7 @@ import { Client } from 'discord.js';
 import { deployCommands } from './deploy-commands';
 import { commands } from './commands';
 import { config } from './config';
+import express from 'express';
 
 const client = new Client({
     intents: ["Guilds", "GuildMessages", "DirectMessages"],
@@ -28,3 +29,10 @@ client.on("interactionCreate", async (interaction) => {
 
 client.login(config.DISCORD_TOKEN);
 
+// Express Stuff
+const app = express();
+const port = config.PORT;
+
+app.listen(port, () => {
+    console.log(`Server is listening on port ${port}!`);
+})
