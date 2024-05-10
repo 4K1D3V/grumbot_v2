@@ -37,10 +37,11 @@ app.listen(port, () => {
 })
 
 //Message Create Events
+const ownerUserIds: String[] = ["1216042650096898189n"];
 client.on('messageCreate', async (message) => {
     if (message.author.bot) return;
     if (message.content.toLowerCase() === "!deploy-commands") {
-        if (message.author.id === "1216042650096898189") {
+        if (ownerUserIds.includes(message.author.id) ) {
             await deployCommands();
             message.reply("Commands deployed!");
         } else message.reply("You do not have permission to do this!");
