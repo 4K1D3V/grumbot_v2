@@ -21,8 +21,13 @@ client.on("interactionCreate", async (interaction) => {
         return;
     }
     const { commandName } = interaction;
-    if (commands[commandName as keyof typeof commands]) {
-        commands[commandName as keyof typeof commands].execute(interaction);
+    try {
+        if (commands[commandName as keyof typeof commands]) {
+            commands[commandName as keyof typeof commands].execute(interaction);
+        }
+    } catch (error) {
+        console.error(error);
+        await interaction.reply({ content: "There was an error while executing this command!"});
     }
 });
 
