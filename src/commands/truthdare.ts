@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { CommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
 export const data = new SlashCommandBuilder()
-    .setName("truth-dare")
+    .setName("truthdare")
     .setDescription("Sends a truth or dare")
     .addStringOption(option =>
         option
