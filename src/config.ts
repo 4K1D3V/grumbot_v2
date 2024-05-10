@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const { DISCORD_TOKEN, DISCORD_CLIENT_ID, PORT } = process.env;
+const { DISCORD_TOKEN, DISCORD_CLIENT_ID, PORT, X_RapidAPI_Key, MUSIXMATCH_API_KEY } = process.env;
 
 if (!DISCORD_TOKEN || !DISCORD_CLIENT_ID) {
   throw new Error("Missing environment variables");
@@ -11,5 +11,7 @@ if (!DISCORD_TOKEN || !DISCORD_CLIENT_ID) {
 export const config = {
   DISCORD_TOKEN,
   DISCORD_CLIENT_ID,
-  PORT
+  PORT,
+  X_RapidAPI_Key,
+  MUSIXMATCH_API_KEY
 };
