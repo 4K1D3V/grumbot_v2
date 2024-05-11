@@ -27,7 +27,7 @@ client.on("interactionCreate", async (interaction) => {
         }
     } catch (error) {
         console.error(error);
-        await interaction.reply({ content: "There was an error while executing this command!"});
+        await interaction.reply({ content: "There was an error while executing this command!" });
     }
 });
 
@@ -57,9 +57,9 @@ client.on('messageCreate', async (message) => {
         if (ownerUserIds.includes(message.author.id)) {
             const numberOfCommands = await deployCommands()
                 .catch(error => {
-                     console.error(error);
-                     message.reply("There was an error while reloading the application (/) commands!");
-                 });
+                    console.error(error);
+                    message.reply("There was an error while reloading the application (/) commands!");
+                });
             message.reply("Reloading application (/) commands...")
                 .then(msg => {
                     setTimeout(() => {
