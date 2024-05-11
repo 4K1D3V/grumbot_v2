@@ -21,6 +21,7 @@
   - express: ^4.19.2
   - random-jokes-api: ^1.5.9
   - servius: ^1.1.4
+  - convert-font: ^1.0.4
 - **Dev Dependencies** ->
   - tsup: ^8.0.2
   - tsx: ^4.9.3
