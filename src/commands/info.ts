@@ -28,7 +28,7 @@ export async function execute(interaction: CommandInteraction) {
             { name: "Total Memory I have -", value: `Free - ${memory.free} of ${memory.total}`, inline: false },
             { name: "Total Disk Space I have -", value: `Free - ${disk.available} of ${disk.total}`, inline: false },
             { name: "My Ping -", value: `${interaction.client.ws.ping} ms`, inline: false },
-            { name: "I am coded on -", value: "NodeJS v20.12.2 and DiscordJS v14.15.2", inline: false },
+            { name: "I am coded on -", value: "NodeJS v20.12.x, DiscordJS v14.15.2 and Typescript v5.4.5", inline: false },
             { name: "I am hosted on -", value: "Koyeb - https://www.koyeb.com/", inline: false }
         )
         .setTimestamp()
