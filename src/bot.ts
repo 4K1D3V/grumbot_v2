@@ -44,7 +44,10 @@ app.listen(port, () => {
 //Message Create Events
 const ownerUserIds: String[] = ["1216042650096898189"];
 client.on('messageCreate', async (message) => {
+    // Ignore if message is from a bot
     if (message.author.bot) return;
+
+    // Reply to !deploy-commands to deploy bot commands to discord
     if (message.content.toLowerCase() === "!deploy-commands") {
         if (ownerUserIds.includes(message.author.id)) {
             await deployCommands();
