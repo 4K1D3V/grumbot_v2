@@ -32,13 +32,13 @@ Simply run the command `npm install` or `npm i` to install all necessary depende
 
 After successfully installing the bot's dependencies, create a file named `.env` in the root directory and enter the required details as follows - 
 
-DISCORD_TOKEN=
-DISCORD_CLIENT_ID=
-GUILD_ID=
-PORT=
-X_RapidAPI_Key=
-MUSIXMATCH_API_KEY=
-GUILD_ID=
+- DISCORD_TOKEN=
+- DISCORD_CLIENT_ID=
+- GUILD_ID=
+- PORT=
+- X_RapidAPI_Key=
+- MUSIXMATCH_API_KEY=
+- GUILD_ID=
 
 For instance, your bot's Token should be assigned to the **DISCORD_TOKEN** variable using `environment variables` or by adding it to the `.env` file. Additionally, make sure to input the Owner user IDs, server name, and other relevant details accurately for the bot to function effectively. Review and input all necessary information before running the bot.
 
