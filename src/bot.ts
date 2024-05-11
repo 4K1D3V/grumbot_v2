@@ -48,10 +48,19 @@ client.on('messageCreate', async (message) => {
     if (message.author.bot) return;
 
     // Reply to !deploy-commands to deploy bot commands to discord
-    if (message.content.toLowerCase() === "!deploy-commands") {
+    if (message.content.toLowerCase() === "!reload") {
         if (ownerUserIds.includes(message.author.id)) {
-            await deployCommands();
-            message.reply("Commands deployed!");
+            const numberOfCommands = await deployCommands()
+                .catch(error => {
+                     console.error(error);
+                     message.reply("There was an error while reloading the application (/) commands!");
+                 });
+            message.reply("Reloading application (/) commands...")
+                .then(msg => {
+                    setTimeout(() => {
+                        msg.edit(`Successfully reloaded ${numberOfCommands} application (/) commands.`);
+                    }, 2000);
+                })
         } else message.reply("You do not have permission to do this!");
     }
 })

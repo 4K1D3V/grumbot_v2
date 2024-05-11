@@ -16,6 +16,7 @@ export async function deployCommands() {
             }
         );
         console.log(`Successfully reloaded ${commandsData.length} application (/) commands.`);
+        return commandsData.length;
     } catch (error) {
         console.error(error);
     }
