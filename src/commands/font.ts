@@ -4,13 +4,13 @@ const { Font } = require("convert-font");
 export const data = new SlashCommandBuilder()
     .setName("font")
     .setDescription("Converts the text to selected font")
-    .addStringOption( option =>
+    .addStringOption(option =>
         option
             .setName("text")
             .setDescription("The text you want to convert")
             .setRequired(true)
     )
-    .addStringOption(option => 
+    .addStringOption(option =>
         option
             .setName("font")
             .setDescription("The font you want to convert the text to")
