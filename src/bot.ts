@@ -47,6 +47,11 @@ client.on('messageCreate', async (message) => {
     // Ignore if message is from a bot
     if (message.author.bot) return;
 
+    // Reply to helo grumbot
+    if (message.content.toLowerCase().startsWith("hello grumbot")) {
+        message.reply("Beep Boop .... Beep Beep, I am Grumbot. I am created by <@1216042650096898189>. I am still in development.")
+    }
+
     // Reply to !deploy-commands to deploy bot commands to discord
     if (message.content.toLowerCase() === "!reload") {
         if (ownerUserIds.includes(message.author.id)) {
