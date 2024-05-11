@@ -7,7 +7,10 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction: CommandInteraction) {
     await interaction.deferReply();
-    const user: string | number | true | User = interaction.options.get('user')?.value || interaction.user;
-    const avatar = (user as User).displayAvatarURL({ size: 4096 })
-    await interaction.editReply({ content: avatar });
+    const user: any = interaction.options.get('user') || interaction.user;
+    if (user.user.avatar === null) {
+        await interaction.editReply("This user has no avatar!");
+        return;
+    }
+    await interaction.editReply(`https://cdn.discordapp.com/avatars/${user.user.id}/${user.user.avatar}.png?size=2048`);
 }
