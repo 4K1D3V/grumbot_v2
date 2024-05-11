@@ -5,5 +5,5 @@ export const data = new SlashCommandBuilder()
     .setDescription("Checks if the bot is online!");
 
 export async function execute(interaction: CommandInteraction) {
-    return interaction.reply("Beep Boop.... Grumbot runs on Typescript!")
+    return interaction.reply("Beep Boop .... Beep Beep, I am Grumbot. I am created by <@1216042650096898189>. I am still in development!")
 }
