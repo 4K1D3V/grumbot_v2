@@ -6,7 +6,8 @@ import * as lyrics from "./lyrics";
 import * as truthdare from "./truthdare";
 import * as avatar from "./avatar";
 import * as banner from "./banner";
+import * as font from "./font";
 
 export const commands = {
-    ping, jokes, translate, info, lyrics, truthdare, avatar, banner
+    ping, jokes, translate, info, lyrics, truthdare, avatar, banner, font
 };
