@@ -5,5 +5,6 @@ export default mysql2.createConnection({
     host: dbConfig.HOST,
     user: dbConfig.USER,
     password: dbConfig.PASSWORD,
-    database: dbConfig.DATABASE
+    database: dbConfig.DATABASE,
+    port: 12435
 });
