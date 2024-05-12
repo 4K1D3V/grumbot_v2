@@ -44,7 +44,6 @@ app.listen(port, () => {
 })
 
 //Message Create Events
-const ownerUserIds: String[] = ["1216042650096898189"];
 client.on('messageCreate', async (message) => {
     // Get guild command prefix
     const prefix = await dbRepository.getGuildById(message.guildId as string)
@@ -62,7 +61,7 @@ client.on('messageCreate', async (message) => {
 
     // Reply to !deploy-commands to deploy bot commands to discord
     if (message.content.toLowerCase() === `${prefix}reload`) {
-        if (ownerUserIds.includes(message.author.id)) {
+        if (config.STAFF_USER_ID.includes(message.author.id)) {
             const numberOfCommands = await deployCommands()
                 .catch(error => {
                     console.error(error);
