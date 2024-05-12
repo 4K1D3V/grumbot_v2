@@ -7,7 +7,7 @@ import * as truthdare from "./fun/truthdare";
 import * as avatar from "./utility/avatar";
 import * as banner from "./utility/banner";
 import * as font from "./fun/font";
-import * as guildinfo from "./utility/guildinfo";
+import * as guildinfo from "./admin/guildinfo";
 import * as changeprefix from "./admin/changeprefix"
 
 export const commands = {
