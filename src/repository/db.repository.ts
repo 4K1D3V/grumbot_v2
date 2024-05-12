@@ -48,7 +48,16 @@ class GuildRepository implements IGuildRepository {
         })
     }
     updateGuild(guild: Guild): Promise<Guild> {
-        throw new Error("Method not implemented.");
+        return new Promise((resolve, reject) => {
+            connection.query<ResultSetHeader>(
+                `UPDATE guilds SET command_prefix = ? WHERE guild_id =?`,
+                [guild.command_prefix, guild.guild_id],
+                (error, result) => {
+                    if (error) reject(error);
+                    else resolve(result as unknown as Guild);
+                }
+            )
+        })
     }
     deleteGuild(guildId: string): Promise<void> {
         throw new Error("Method not implemented.");
