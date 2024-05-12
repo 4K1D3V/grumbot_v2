@@ -7,7 +7,8 @@ import * as truthdare from "./truthdare";
 import * as avatar from "./avatar";
 import * as banner from "./banner";
 import * as font from "./font";
+import * as guildinfo from "./guildinfo";
 
 export const commands = {
-    ping, jokes, translate, info, lyrics, truthdare, avatar, banner, font
+    ping, jokes, translate, info, lyrics, truthdare, avatar, banner, font, guildinfo
 };
