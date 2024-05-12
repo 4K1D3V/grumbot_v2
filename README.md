@@ -22,6 +22,7 @@
   - random-jokes-api: ^1.5.9
   - servius: ^1.1.4
   - convert-font: ^1.0.4
+  - mysql2: ^3.9.7
 - **Dev Dependencies** ->
   - tsup: ^8.0.2
   - tsx: ^4.9.3
@@ -40,10 +41,16 @@ After successfully installing the bot's dependencies, create a file named `.env`
 - X_RapidAPI_Key=
 - MUSIXMATCH_API_KEY=
 - GUILD_ID=
+- MYSQL_HOST=
+- MYSQL_DATABASE
+- MYSQL_PORT
+- MYSQL_USER
+- MYSQL_PASSWORD
 
 For instance, your bot's Token should be assigned to the **DISCORD_TOKEN** variable using `environment variables` or by adding it to the `.env` file. Additionally, make sure to input the Owner user IDs, server name, and other relevant details accurately for the bot to function effectively. Review and input all necessary information before running the bot.
 
 **Note -**
+- To get a free MySQL for development purposes, head to [Aiven](https://aiven.io/) and create a free account and, Create a SQL Instance for free. 
 - Get RapidAPI from [Rapid API Hub](https://rapidapi.com/hub) to use various API's. You will need to subscribe the API's manually via RapidAPI Hub.
 - Get MusicxMatch API Key from [MusicxMatch](https://developer.musixmatch.com/) to get the songs details
 
