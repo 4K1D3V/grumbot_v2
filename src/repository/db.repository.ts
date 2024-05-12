@@ -1,17 +1,17 @@
 import { ResultSetHeader } from "mysql2";
 import connection from "../db/db"
-import Guild from "../model/guild.model"
+import CurrentGuild from "../model/currentGuild.model"
 
 interface IGuildRepository {
-    save(guild: Guild): Promise<Guild>;
-    getAllGuilds(): Promise<Guild[]>;
-    getGuildById(guildId: string): Promise<Guild>;
-    updateGuild(guild: Guild): Promise<Guild>;
+    save(guild: CurrentGuild): Promise<CurrentGuild>;
+    getAllGuilds(): Promise<CurrentGuild[]>;
+    getGuildById(guildId: string): Promise<CurrentGuild>;
+    updateGuild(guild: CurrentGuild): Promise<CurrentGuild>;
     deleteGuild(guildId: string): Promise<void>;
 }
 
 class GuildRepository implements IGuildRepository {
-    save(guild: Guild): Promise<Guild> {
+    save(guild: CurrentGuild): Promise<CurrentGuild> {
         return new Promise((resolve, reject) => {
             connection.query<ResultSetHeader>(
                 `INSERT INTO guilds (guild_id, guild_name, command_prefix) VALUES (?,?,?)`,
@@ -24,37 +24,37 @@ class GuildRepository implements IGuildRepository {
             );
         });
     }
-    getAllGuilds(): Promise<Guild[]> {
+    getAllGuilds(): Promise<CurrentGuild[]> {
         return new Promise((resolve,reject) => {
             connection.query<ResultSetHeader>(
                 `SELECT * FROM guilds`,
                 (error, result) => {
                     if (error) reject(error);
-                    else resolve(result as unknown as Guild[]);
+                    else resolve(result as unknown as CurrentGuild[]);
                 }
             )
         })
     }
-    getGuildById(guildId: string): Promise<Guild> {
+    getGuildById(guildId: string): Promise<CurrentGuild> {
         return new Promise((resolve, reject) => {
             connection.query<ResultSetHeader>(
                 `SELECT * FROM guilds WHERE guild_id = ?`,
                 [guildId],
                 (error, result) => {
                     if (error) reject(error);
-                    else resolve(result as unknown as Guild);
+                    else resolve(result as unknown as CurrentGuild);
                 }
             )
         })
     }
-    updateGuild(guild: Guild): Promise<Guild> {
+    updateGuild(guild: CurrentGuild): Promise<CurrentGuild> {
         return new Promise((resolve, reject) => {
             connection.query<ResultSetHeader>(
                 `UPDATE guilds SET command_prefix = ? WHERE guild_id =?`,
                 [guild.command_prefix, guild.guild_id],
                 (error, result) => {
                     if (error) reject(error);
-                    else resolve(result as unknown as Guild);
+                    else resolve(result as unknown as CurrentGuild);
                 }
             )
         })

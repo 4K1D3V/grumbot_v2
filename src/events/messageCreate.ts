@@ -1,6 +1,6 @@
 import { CommandInteraction, Events, Message, MessageInteraction } from "discord.js";
 import dbRepository from "../repository/db.repository";
-import Guild from "../model/guild.model";
+import CurrentGuild from "../model/currentGuild.model";
 import { config } from "../config";
 import { deployCommands } from "../deploy-commands";
 
@@ -11,7 +11,7 @@ module.exports = {
 
         // Fetch Guild Prefix Command
         const prefix = await dbRepository.getGuildById(message.guildId as string)
-            .then((result: Guild) => {
+            .then((result: CurrentGuild) => {
                 return result[0].command_prefix;
             })
 
