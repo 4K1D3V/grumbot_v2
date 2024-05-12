@@ -3,6 +3,8 @@ import { deleteCommands, deployCommands } from './deploy-commands';
 import { commands } from './commands';
 import { config } from './config';
 import express from 'express';
+import dbRepository from './repository/db.repository';
+import Guild from './model/guild.model';
 
 const client = new Client({
     intents: ["Guilds", "GuildMessages", "DirectMessages", "MessageContent"],
@@ -44,6 +46,12 @@ app.listen(port, () => {
 //Message Create Events
 const ownerUserIds: String[] = ["1216042650096898189"];
 client.on('messageCreate', async (message) => {
+    // Get guild command prefix
+    const prefix = await dbRepository.getGuildById(message.guildId as string)
+        .then((result: Guild) => {
+            return result[0].command_prefix;
+        })
+
     // Ignore if message is from a bot
     if (message.author.bot) return;
 
@@ -53,7 +61,7 @@ client.on('messageCreate', async (message) => {
     }
 
     // Reply to !deploy-commands to deploy bot commands to discord
-    if (message.content.toLowerCase() === "!reload") {
+    if (message.content.toLowerCase() === `${prefix}reload`) {
         if (ownerUserIds.includes(message.author.id)) {
             const numberOfCommands = await deployCommands()
                 .catch(error => {
@@ -67,5 +75,10 @@ client.on('messageCreate', async (message) => {
                     }, 2000);
                 })
         } else message.reply("You do not have permission to do this!");
+    }
+
+    // Ping command with command prefix
+    if (message.content.toLowerCase() === `${prefix}ping`) {
+        message.reply("PONG!");
     }
 })
