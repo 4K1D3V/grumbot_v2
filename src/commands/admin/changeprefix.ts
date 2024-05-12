@@ -1,6 +1,6 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
-import dbRepository from "../repository/db.repository"
-import Guild from "../model/guild.model";
+import dbRepository from "../../repository/db.repository"
+import Guild from "../../model/guild.model";
 
 export const data = new SlashCommandBuilder()
     .setName("changeprefix")

@@ -1,6 +1,6 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { config } from "../config";
+import { config } from "../../config";
 
 export const data = new SlashCommandBuilder()
     .setName("translate")

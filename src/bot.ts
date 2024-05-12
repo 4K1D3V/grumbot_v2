@@ -79,6 +79,6 @@ client.on('messageCreate', async (message) => {
 
     // Ping command with command prefix
     if (message.content.toLowerCase() === `${prefix}ping`) {
-        message.reply("PONG!");
+        message.reply("Beep Boop .... Beep Beep, I am Grumbot. I am created by <@1216042650096898189>. I am still in development!");
     }
 })

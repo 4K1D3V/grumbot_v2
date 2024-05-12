@@ -1,5 +1,5 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
-import dbRepository from "../repository/db.repository"
+import dbRepository from "../../repository/db.repository"
 
 export const data = new SlashCommandBuilder()
     .setName("guildinfo")

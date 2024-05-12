@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { CommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js";
-import { config } from "../config";
+import { config } from "../../config";
 
 export const data = new SlashCommandBuilder()
     .setName("lyrics")
