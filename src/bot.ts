@@ -9,14 +9,17 @@ const client = new Client({
     intents: ["Guilds", "GuildMessages", "DirectMessages", "MessageContent"],
 });
 
+// Event fired once, when the client is ready
 client.once("ready", async () => {
     console.log("Discord bot is ready! 🤖");
 });
 
+// Event fired each time the bot is added to a guild
 client.on("guildCreate", async () => {
     await deployCommands();
 });
 
+// Interaction Create Events, redirects slash commands to respective files
 client.on("interactionCreate", async (interaction) => {
     if (!interaction.isCommand()) {
         return;
@@ -32,6 +35,7 @@ client.on("interactionCreate", async (interaction) => {
     }
 });
 
+// Login bot to discord
 client.login(config.DISCORD_TOKEN);
 
 // Express Stuff
