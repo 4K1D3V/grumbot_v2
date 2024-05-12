@@ -8,7 +8,8 @@ import * as avatar from "./avatar";
 import * as banner from "./banner";
 import * as font from "./font";
 import * as guildinfo from "./guildinfo";
+import * as changeprefix from "./changeprefix"
 
 export const commands = {
-    ping, jokes, translate, info, lyrics, truthdare, avatar, banner, font, guildinfo
+    ping, jokes, translate, info, lyrics, truthdare, avatar, banner, font, guildinfo, changeprefix
 };
