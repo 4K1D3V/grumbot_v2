@@ -1,6 +1,7 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import dbRepository from "../../repository/db.repository"
 import Guild from "../../model/guild.model";
+import { config } from "../../config"
 
 export const data = new SlashCommandBuilder()
     .setName("changeprefix")
@@ -19,6 +20,10 @@ export const data = new SlashCommandBuilder()
     )
 
 export async function execute(interaction: CommandInteraction) {
+    if (!config.STAFF_USER_ID.includes(interaction.user.id)) {
+        await interaction.reply({content: "You don't have permission to run this command!", ephemeral:true });
+        return;
+    }
     await interaction.deferReply();
     const commandPrefix = interaction.options.get("prefix")?.value;
     const guild =  {
