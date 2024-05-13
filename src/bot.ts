@@ -2,6 +2,8 @@ import { Client, Guild, Message, TextChannel } from 'discord.js';
 import { config } from './config';
 import express from 'express';
 import events from "./events/index"
+import dbRepository from './repository/db.repository';
+import CurrentGuild from './model/currentGuild.model';
 
 const client = new Client({
     intents: ["Guilds", "GuildMessages", "DirectMessages", "MessageContent"],
@@ -10,6 +12,7 @@ const client = new Client({
 // Event fired once, when the client is ready
 client.once("ready", async () => {
     console.log("Discord bot is ready! 🤖");
+    await updateGuildCommandPrefixMap(client);
 });
 
 // Event fired each time the bot is added to a guild
@@ -24,7 +27,7 @@ client.on("interactionCreate", async (interaction) => {
 
 // Message Create Events
 client.on('messageCreate', async (message) => {
-    events.messageCreate.execute(message)
+    events.messageCreate.execute(message, guildCommandPrefixMap)
 })
 
 // Message Update Events
@@ -42,3 +45,21 @@ const port = config.PORT;
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}!`);
 })
+
+var guildCommandPrefixMap: Map<string, string> = new Map();
+
+export async function updateGuildCommandPrefixMap(client: Client<boolean>) {
+    const allGuildsId: string[] = client.guilds.cache.map(guild => guild.id);
+    var allGuildsInSQL: CurrentGuild[];
+    await dbRepository.getAllGuilds().then(guilds => {
+        allGuildsInSQL = guilds;
+    });
+    allGuildsId.forEach(guildid => {
+        allGuildsInSQL.find(guild => {
+            if (guild.guild_id === guildid) guildCommandPrefixMap.set(guildid, guild.command_prefix as string);
+        })
+    })
+    console.log(guildCommandPrefixMap);
+}
+
+export default guildCommandPrefixMap;
