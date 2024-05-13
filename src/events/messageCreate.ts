@@ -1,6 +1,4 @@
-import { CommandInteraction, Events, Message, MessageInteraction } from "discord.js";
-import dbRepository from "../repository/db.repository";
-import CurrentGuild from "../model/currentGuild.model";
+import { Message } from "discord.js";
 import { config } from "../config";
 import { deployCommands } from "../deploy-commands";
 import guildCommandPrefixMap from "../bot";
