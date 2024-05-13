@@ -4,14 +4,11 @@ import CurrentGuild from "../model/currentGuild.model";
 import { config } from "../config";
 import { deployCommands } from "../deploy-commands";
 
-export async function execute(message: Message<boolean>) {
+export async function execute(message: Message<boolean>, guildCommandPrefixMap: Map<string, string>) {
     if (message.author.bot) return;
 
     // Fetch Guild Prefix Command
-    const prefix = await dbRepository.getGuildById(message.guildId as string)
-        .then((result: CurrentGuild) => {
-            return result[0].command_prefix;
-        })
+    const prefix = guildCommandPrefixMap.get(message.guildId as string);
 
     // Reply to hello grumbot
     if (message.content.toLowerCase().startsWith("hello grumbot")) {

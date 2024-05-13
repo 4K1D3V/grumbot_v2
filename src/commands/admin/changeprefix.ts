@@ -2,6 +2,7 @@ import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import dbRepository from "../../repository/db.repository"
 import CurrentGuild from "../../model/currentGuild.model";
 import { config } from "../../config"
+import { updateGuildCommandPrefixMap } from "../../bot";
 
 export const data = new SlashCommandBuilder()
     .setName("changeprefix")
@@ -32,5 +33,6 @@ export async function execute(interaction: CommandInteraction) {
         command_prefix: commandPrefix as string
     }
     dbRepository.updateGuild(guild as CurrentGuild);
+    await updateGuildCommandPrefixMap(interaction.client);
     await interaction.editReply(`Updated Guild Command Prefix to - ${commandPrefix}`);
 }
