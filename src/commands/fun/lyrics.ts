@@ -24,28 +24,33 @@ export async function execute(interaction: CommandInteraction) {
     const artistName = interaction.options.get('artist')?.value;
     const lyrics = await getLyrics(songName, artistName);
     const songDetails = await getSongDetails(songName, artistName);
-    const songEmbed = new EmbedBuilder()
-        .setTitle("Requested Song Details")
-        .setURL(songDetails.track_share_url)
-        .setAuthor({ name: songDetails.artist_name })
-        .setDescription(`Album Name - ${songDetails.album_name}`)
-        .addFields(
-            { name: "Song Name", value: songDetails.track_name, inline: false },
-            { name: "Track URL", value: songDetails.track_share_url, inline: false },
-            { name: "Artist Name", value: songDetails.artist_name, inline: false }
-        )
-        .setTimestamp()
-        .setFooter({ text: "Requested by " + interaction.user.username, iconURL: interaction.user.avatarURL()! })
-    await interaction.editReply({ embeds: [songEmbed] });
-    if (lyrics.includes("I couldn't find the lyrics")) {
-        await interaction.followUp(lyrics);
-    } else {
-        await interaction.followUp("Getting Lyrics...")
-            .then(async msg => {
-                setTimeout(async () => {
-                    await msg.edit(`${lyrics}`)
-                }, 2000);
-            })
+    if (songDetails === undefined || songDetails === null) {
+        interaction.editReply(`Grumbot could not find the song ${songName} by ${artistName} :(`);
+    }
+    else {
+        const songEmbed = new EmbedBuilder()
+            .setTitle("Requested Song Details")
+            .setURL(songDetails.track_share_url)
+            .setAuthor({ name: songDetails.artist_name })
+            .setDescription(`Album Name - ${songDetails.album_name}`)
+            .addFields(
+                { name: "Song Name", value: songDetails.track_name, inline: false },
+                { name: "Track URL", value: songDetails.track_share_url, inline: false },
+                { name: "Artist Name", value: songDetails.artist_name, inline: false }
+            )
+            .setTimestamp()
+            .setFooter({ text: "Requested by " + interaction.user.username, iconURL: interaction.user.avatarURL()! })
+        await interaction.editReply({ embeds: [songEmbed] });
+        if (lyrics.includes("I couldn't find the lyrics")) {
+            await interaction.followUp(lyrics);
+        } else {
+            await interaction.followUp("Getting Lyrics...")
+                .then(async msg => {
+                    setTimeout(async () => {
+                        await msg.edit(`${lyrics}`)
+                    }, 2000);
+                })
+        }
     }
 }
 
