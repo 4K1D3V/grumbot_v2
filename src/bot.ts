@@ -1,4 +1,4 @@
-import { Client, Guild, TextChannel } from 'discord.js';
+import { Client, Guild, Message, TextChannel } from 'discord.js';
 import { config } from './config';
 import express from 'express';
 import events from "./events/index"
@@ -22,9 +22,14 @@ client.on("interactionCreate", async (interaction) => {
     events.interactionCreate.execute(interaction);
 });
 
-//Message Create Events
+// Message Create Events
 client.on('messageCreate', async (message) => {
     events.messageCreate.execute(message)
+})
+
+// Message Update Events
+client.on('messageUpdate', async (oldMessage, newMessage) =>{
+    events.messageUpdate.execute(oldMessage as Message<boolean>, newMessage as Message<boolean>);
 })
 
 // Login bot to discord
