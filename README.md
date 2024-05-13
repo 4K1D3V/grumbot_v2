@@ -60,7 +60,7 @@ You are now ready to run the bot. Simply enter the commands below:
 
 `npm run dev`
 
-To deploy commands to the server, REPLACE the owner user id in `bot.js` at line 45. Add the bot in a server and run it with the above command. The, type `!reload` to start registering the Slash Commands to Discord.
+To deploy commands to the server, REPLACE the owner user id in `src -> config.ts`. Add the bot in a server and run it with the above command. The, type `!reload` to start registering the Slash Commands to Discord.
 
 **Note -** Deploy commands is only required to be ran once, each time there is any changes in the slash commands.
 
