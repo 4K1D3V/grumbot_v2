@@ -17,6 +17,7 @@ client.once("ready", async () => {
 
 // Event fired each time the bot is added to a guild
 client.on("guildCreate", async (guild: Guild) => {
+    await updateGuildCommandPrefixMap(guild.client);
     events.guildCreate.execute(guild);
 });
 
@@ -27,11 +28,11 @@ client.on("interactionCreate", async (interaction) => {
 
 // Message Create Events
 client.on('messageCreate', async (message) => {
-    events.messageCreate.execute(message, guildCommandPrefixMap)
+    events.messageCreate.execute(message)
 })
 
 // Message Update Events
-client.on('messageUpdate', async (oldMessage, newMessage) =>{
+client.on('messageUpdate', async (oldMessage, newMessage) => {
     events.messageUpdate.execute(oldMessage as Message<boolean>, newMessage as Message<boolean>);
 })
 
@@ -59,7 +60,6 @@ export async function updateGuildCommandPrefixMap(client: Client<boolean>) {
             if (guild.guild_id === guildid) guildCommandPrefixMap.set(guildid, guild.command_prefix as string);
         })
     })
-    console.log(guildCommandPrefixMap);
 }
 
 export default guildCommandPrefixMap;
