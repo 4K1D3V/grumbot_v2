@@ -26,13 +26,23 @@ export async function execute(interaction: CommandInteraction) {
     var staffToAdd: string[] = [];
     if (currentStaff === undefined) {
         staffToAdd.push(userToAdd?.id!);
+        await updateStaff(interaction, staffToAdd);
+        await interaction.editReply(`Added <@${userToAdd?.id}> to Staff!`)
     } else {
         staffToAdd = currentStaff;
         if (staffToAdd.includes(userToAdd?.id!)) {
             await interaction.editReply(`User <@${userToAdd?.id}> already exists as staff!`);
+            return;
         } 
-        else staffToAdd.push(userToAdd?.id!);
+        else {
+            staffToAdd.push(userToAdd?.id!);
+            await updateStaff(interaction, staffToAdd);
+            await interaction.editReply(`Added <@${userToAdd?.id}> to Staff!`)
+        }
     }
+}
+
+async function updateStaff(interaction: CommandInteraction, staffToAdd: string[]) {
     const guild = {
         guild_id: interaction.guildId!,
         guild_name: interaction.guild?.name!,
@@ -41,5 +51,5 @@ export async function execute(interaction: CommandInteraction) {
     }
     dbRepository.updateGuildStaff(guild as CurrentGuild);
     await updateGuildMaps();
-    interaction.editReply(`Added <@${userToAdd?.id}> to Staff!`)
+
 }
