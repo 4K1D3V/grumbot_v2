@@ -1,4 +1,4 @@
-import { Client, Guild, Message, TextChannel } from 'discord.js';
+import { ActivitiesOptions, ActivityType, Client, Guild, Message, TextChannel } from 'discord.js';
 import { config } from './config';
 import express from 'express';
 import events from "./events/index"
@@ -13,6 +13,23 @@ const client = new Client({
 client.once("ready", async () => {
     console.log("Discord bot is ready! 🤖");
     await updateGuildCommandPrefixMap();
+    const guildCount = getTotalGuilds();
+    const memberCount = getTotalUsers();
+    const activities: ActivitiesOptions[] = [
+            { name: `${guildCount} Guilds!`, type: ActivityType.Watching },
+            { name: `${memberCount} Members!`, type: ActivityType.Watching }
+    ]
+    setInterval(() => {
+        const randomIndex = Math.floor(Math.random() * activities.length);
+        const newActivity = activities[randomIndex];
+        client.user?.setPresence({
+            status: "online",
+            activities: [
+                newActivity
+            ]
+        })
+
+    }, 300_000);
 });
 
 // Event fired each time the bot is added to a guild
@@ -48,7 +65,15 @@ app.listen(port, () => {
 })
 
 function getTotalGuilds() {
-    
+    var guildCount: number = 0;
+    client.guilds.cache.map(guild => guildCount++);
+    return guildCount;
+}
+
+function getTotalUsers() {
+    var memberCount: number = 0;
+    client.guilds.cache.map(guild => memberCount += guild.memberCount)
+    return memberCount;
 }
 
 var guildCommandPrefixMap: Map<string, string> = new Map();
