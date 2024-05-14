@@ -43,5 +43,5 @@ export async function execute(interaction: CommandInteraction) {
     }
     dbRepository.updateGuildStaff(guild as CurrentGuild);
     await updateGuildMaps();
-    interaction.editReply(`Removed <@${interaction.user.id}> from Staff!`)
+    interaction.editReply(`Removed <@${userToRemove?.id}> from Staff!`)
 }

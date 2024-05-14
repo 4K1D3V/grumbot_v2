@@ -38,5 +38,5 @@ export async function execute(interaction: CommandInteraction) {
     }
     dbRepository.updateGuildStaff(guild as CurrentGuild);
     await updateGuildMaps();
-    interaction.editReply(`Added <@${interaction.user.id}> to Staff!`)
+    interaction.editReply(`Added <@${userToAdd?.id}> to Staff!`)
 }
