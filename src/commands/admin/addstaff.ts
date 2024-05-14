@@ -28,7 +28,10 @@ export async function execute(interaction: CommandInteraction) {
         staffToAdd.push(userToAdd?.id!);
     } else {
         staffToAdd = currentStaff;
-        staffToAdd.push(userToAdd?.id!);
+        if (staffToAdd.includes(userToAdd?.id!)) {
+            await interaction.editReply(`User <@${userToAdd?.id}> already exists as staff!`);
+        } 
+        else staffToAdd.push(userToAdd?.id!);
     }
     const guild = {
         guild_id: interaction.guildId!,
