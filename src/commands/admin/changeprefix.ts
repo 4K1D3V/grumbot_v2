@@ -1,8 +1,8 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
-import dbRepository from "../../repository/db.repository"
+import dbRepository from "../../repository/db.repository";
 import CurrentGuild from "../../model/currentGuild.model";
-import { config } from "../../config"
-import { updateGuildCommandPrefixMap } from "../../bot";
+import { updateGuildMaps } from "../../bot";
+import allGuildsMap from "../../bot";
 
 export const data = new SlashCommandBuilder()
     .setName("changeprefix")
@@ -21,7 +21,7 @@ export const data = new SlashCommandBuilder()
     )
 
 export async function execute(interaction: CommandInteraction) {
-    if (!config.STAFF_USER_ID.includes(interaction.user.id)) {
+    if (!allGuildsMap.guildStaffUserIdMap.get(interaction.guildId!)?.includes(interaction.user.id)) {
         await interaction.reply({content: "You don't have permission to run this command!", ephemeral:true });
         return;
     }
@@ -32,7 +32,7 @@ export async function execute(interaction: CommandInteraction) {
         guild_name: interaction.guild?.name,
         command_prefix: commandPrefix as string
     }
-    dbRepository.updateGuild(guild as CurrentGuild);
-    await updateGuildCommandPrefixMap();
+    dbRepository.updateGuildCommandPrefix(guild as CurrentGuild);
+    await updateGuildMaps();
     await interaction.editReply(`Updated Guild Command Prefix to - ${commandPrefix}`);
 }
