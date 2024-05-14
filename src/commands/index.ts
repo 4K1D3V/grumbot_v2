@@ -8,8 +8,22 @@ import * as avatar from "./utility/avatar";
 import * as banner from "./utility/banner";
 import * as font from "./fun/font";
 import * as guildinfo from "./admin/guildinfo";
-import * as changeprefix from "./admin/changeprefix"
+import * as changeprefix from "./admin/changeprefix";
+import * as addStaff from "./admin/addstaff";
+import * as removeStaff from "./admin/removestaff";
 
 export const commands = {
-    ping, jokes, translate, info, lyrics, truthdare, avatar, banner, font, guildinfo, changeprefix
+    ping, 
+    jokes,
+    translate,
+    info,
+    lyrics,
+    truthdare,
+    avatar,
+    banner,
+    font,
+    guildinfo,
+    changeprefix,
+    addStaff,
+    removeStaff
 };
