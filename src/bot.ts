@@ -12,12 +12,12 @@ const client = new Client({
 // Event fired once, when the client is ready
 client.once("ready", async () => {
     console.log("Discord bot is ready! 🤖");
-    await updateGuildCommandPrefixMap(client);
+    await updateGuildCommandPrefixMap();
 });
 
 // Event fired each time the bot is added to a guild
 client.on("guildCreate", async (guild: Guild) => {
-    await updateGuildCommandPrefixMap(guild.client);
+    await updateGuildCommandPrefixMap();
     events.guildCreate.execute(guild);
 });
 
@@ -47,9 +47,13 @@ app.listen(port, () => {
     console.log(`Server is listening on port ${port}!`);
 })
 
+function getTotalGuilds() {
+    
+}
+
 var guildCommandPrefixMap: Map<string, string> = new Map();
 
-export async function updateGuildCommandPrefixMap(client: Client<boolean>) {
+export async function updateGuildCommandPrefixMap() {
     const allGuildsId: string[] = client.guilds.cache.map(guild => guild.id);
     var allGuildsInSQL: CurrentGuild[];
     await dbRepository.getAllGuilds().then(guilds => {

@@ -33,6 +33,6 @@ export async function execute(interaction: CommandInteraction) {
         command_prefix: commandPrefix as string
     }
     dbRepository.updateGuild(guild as CurrentGuild);
-    await updateGuildCommandPrefixMap(interaction.client);
+    await updateGuildCommandPrefixMap();
     await interaction.editReply(`Updated Guild Command Prefix to - ${commandPrefix}`);
 }
