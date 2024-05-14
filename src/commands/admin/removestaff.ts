@@ -25,23 +25,25 @@ export async function execute(interaction: CommandInteraction) {
     const currentStaff = allGuildsMap.guildStaffUserIdMap.get(interaction.guildId as string);
     var staffToUpdate: string[] = [];
     if (currentStaff === undefined) {
-        await interaction.editReply(`There are no staff in the Guild Currently! Please run the command /addstaff to add a staff.`)
+        await interaction.editReply(`There are no staff in the Guild Currently! Please run the command \`/addstaff\` to add a staff.`)
     } else {
         if (currentStaff.includes(userToRemove?.id!)) {
             const index = currentStaff.indexOf(userToRemove?.id!)
             if (index > -1) {
                 currentStaff.splice(index, 1);
                 staffToUpdate = currentStaff;
+                const guild = {
+                    guild_id: interaction.guildId!,
+                    guild_name: interaction.guild?.name!,
+                    command_prefix: allGuildsMap.guildCommandPrefixMap.get(interaction.guildId!)!,
+                    staff_user_id: staffToUpdate.toString()
+                }
+                dbRepository.updateGuildStaff(guild as CurrentGuild);
+                await updateGuildMaps();
+                interaction.editReply(`Removed <@${userToRemove?.id}> from Staff!`)
             }
+        } else {
+            await interaction.editReply(`User <@${userToRemove?.id}> is not a staff member! Run \`/addstaff\` to add a new staff.`)
         }
     }
-    const guild = {
-        guild_id: interaction.guildId!,
-        guild_name: interaction.guild?.name!,
-        command_prefix: allGuildsMap.guildCommandPrefixMap.get(interaction.guildId!)!,
-        staff_user_id: staffToUpdate.toString()
-    }
-    dbRepository.updateGuildStaff(guild as CurrentGuild);
-    await updateGuildMaps();
-    interaction.editReply(`Removed <@${userToRemove?.id}> from Staff!`)
 }
