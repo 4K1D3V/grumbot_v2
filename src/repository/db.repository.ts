@@ -6,8 +6,9 @@ interface IGuildRepository {
     save(guild: CurrentGuild): Promise<CurrentGuild>;
     getAllGuilds(): Promise<CurrentGuild[]>;
     getGuildById(guildId: string): Promise<CurrentGuild>;
-    updateGuild(guild: CurrentGuild): Promise<CurrentGuild>;
+    updateGuildCommandPrefix(guild: CurrentGuild): Promise<CurrentGuild>;
     deleteGuild(guildId: string): Promise<void>;
+    updateGuildStaff(guild: CurrentGuild): Promise<CurrentGuild>;
 }
 
 class GuildRepository implements IGuildRepository {
@@ -47,10 +48,10 @@ class GuildRepository implements IGuildRepository {
             )
         })
     }
-    updateGuild(guild: CurrentGuild): Promise<CurrentGuild> {
+    updateGuildCommandPrefix(guild: CurrentGuild): Promise<CurrentGuild> {
         return new Promise((resolve, reject) => {
             connection.query<ResultSetHeader>(
-                `UPDATE guilds SET command_prefix = ? WHERE guild_id =?`,
+                `UPDATE guilds SET command_prefix = ? WHERE guild_id = ?`,
                 [guild.command_prefix, guild.guild_id],
                 (error, result) => {
                     if (error) reject(error);
@@ -59,6 +60,20 @@ class GuildRepository implements IGuildRepository {
             )
         })
     }
+
+    updateGuildStaff(guild: CurrentGuild): Promise<CurrentGuild> {
+        return new Promise((resolve, reject) => {
+            connection.query<ResultSetHeader>(
+                `UPDATE guilds SET staff_user_id = ? WHERE guild_id = ?`,
+                [guild.staff_user_id, guild.guild_id],
+                (error, result) => {
+                    if (error) reject(error);
+                    else resolve(result as unknown as CurrentGuild);
+                }
+            )
+        })
+    }
+
     deleteGuild(guildId: string): Promise<void> {
         throw new Error("Method not implemented.");
     }
