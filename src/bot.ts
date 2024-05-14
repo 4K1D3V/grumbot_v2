@@ -12,7 +12,7 @@ const client = new Client({
 // Event fired once, when the client is ready
 client.once("ready", async () => {
     console.log("Discord bot is ready! 🤖");
-    await updateGuildCommandPrefixMap();
+    await updateGuildMaps();
     const guildCount = getTotalGuilds();
     const memberCount = getTotalUsers();
     const activities: ActivitiesOptions[] = [
@@ -34,7 +34,7 @@ client.once("ready", async () => {
 
 // Event fired each time the bot is added to a guild
 client.on("guildCreate", async (guild: Guild) => {
-    await updateGuildCommandPrefixMap();
+    await updateGuildMaps();
     events.guildCreate.execute(guild);
 });
 
@@ -77,8 +77,9 @@ function getTotalUsers() {
 }
 
 var guildCommandPrefixMap: Map<string, string> = new Map();
+var guildStaffUserIdMap: Map<string,string[]> = new Map();
 
-export async function updateGuildCommandPrefixMap() {
+export async function updateGuildMaps() {
     const allGuildsId: string[] = client.guilds.cache.map(guild => guild.id);
     var allGuildsInSQL: CurrentGuild[];
     await dbRepository.getAllGuilds().then(guilds => {
@@ -86,9 +87,15 @@ export async function updateGuildCommandPrefixMap() {
     });
     allGuildsId.forEach(guildid => {
         allGuildsInSQL.find(guild => {
-            if (guild.guild_id === guildid) guildCommandPrefixMap.set(guildid, guild.command_prefix as string);
+            if (guild.guild_id === guildid) {
+                guildCommandPrefixMap.set(guildid, guild.command_prefix as string);
+                var guildStaffUserId: string[] = guild.staff_user_id?.split(",")!;
+                guildStaffUserIdMap.set(guildid, guildStaffUserId);
+            }
         })
     })
 }
 
-export default guildCommandPrefixMap;
+export default {
+    guildCommandPrefixMap, guildStaffUserIdMap
+}
