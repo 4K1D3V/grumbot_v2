@@ -10,6 +10,7 @@ import * as font from "./fun/font";
 import * as changeprefix from "./admin/changeprefix";
 import * as addstaff from "./admin/addstaff";
 import * as removestaff from "./admin/removestaff";
+import * as viewprefix from "./mod/viewprefix"
 
 export const commands = {
     ping, 
@@ -23,5 +24,6 @@ export const commands = {
     font,
     changeprefix,
     addstaff,
-    removestaff
+    removestaff,
+    viewprefix
 };
