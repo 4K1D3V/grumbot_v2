@@ -15,9 +15,11 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction: CommandInteraction) {
     await interaction.deferReply();
-    if (!allGuildsMap.guildStaffUserIdMap.get(interaction.guildId!)?.includes(interaction.user.id) || interaction.user.id !== interaction.guild?.ownerId) {
-        await interaction.editReply({ content: "You don't have permission to run this command!"});
-        return;
+    if (interaction.user.id !== interaction.guild?.ownerId) {
+        if (!allGuildsMap.guildStaffUserIdMap.get(interaction.guildId!)?.includes(interaction.user.id)) {
+            await interaction.editReply({ content: "You don't have permission to run this command!" });
+            return;
+        }
     }
     const userToAdd = interaction.options.get("user")?.user;
     const currentStaff = allGuildsMap.guildStaffUserIdMap.get(interaction.guildId as string);
