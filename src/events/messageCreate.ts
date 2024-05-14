@@ -1,13 +1,13 @@
 import { Message } from "discord.js";
 import { config } from "../config";
 import { deployCommands } from "../deploy-commands";
-import guildCommandPrefixMap from "../bot";
+import allGuildsMap from "../bot";
 
 export async function execute(message: Message<boolean>) {
     if (message.author.bot) return;
 
     // Fetch Guild Prefix Command
-    const prefix = guildCommandPrefixMap.get(message.guildId as string);
+    const prefix = allGuildsMap.guildCommandPrefixMap.get(message.guildId as string);
 
     // Reply to hello grumbot
     if (message.content.toLowerCase().startsWith("hello grumbot")) {
