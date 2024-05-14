@@ -14,11 +14,11 @@ export const data = new SlashCommandBuilder()
     );
 
 export async function execute(interaction: CommandInteraction) {
+    await interaction.deferReply();
     if (allGuildsMap.guildStaffUserIdMap.get(interaction.guildId!)?.includes(interaction.user.id) || interaction.user.id === interaction.guild?.ownerId) {
         await interaction.reply({ content: "You don't have permission to run this command!", ephemeral: true });
         return;
     }
-    await interaction.deferReply();
     const userToRemove = interaction.options.get("user")?.user;
     const currentStaff = allGuildsMap.guildStaffUserIdMap.get(interaction.guildId as string);
     var staffToUpdate: string[] = [];
