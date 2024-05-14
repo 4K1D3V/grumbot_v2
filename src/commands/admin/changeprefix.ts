@@ -21,11 +21,11 @@ export const data = new SlashCommandBuilder()
     )
 
 export async function execute(interaction: CommandInteraction) {
-    if (!allGuildsMap.guildStaffUserIdMap.get(interaction.guildId!)?.includes(interaction.user.id) || interaction.user.id === interaction.guild?.ownerId) {
-        await interaction.reply({content: "You don't have permission to run this command!", ephemeral:true });
+    await interaction.deferReply();
+    if (!allGuildsMap.guildStaffUserIdMap.get(interaction.guildId!)?.includes(interaction.user.id) || interaction.user.id !== interaction.guild?.ownerId) {
+        await interaction.editReply({content: "You don't have permission to run this command!" });
         return;
     }
-    await interaction.deferReply();
     const commandPrefix = interaction.options.get("prefix")?.value;
     const guild =  {
         guild_id: interaction.guildId!,
