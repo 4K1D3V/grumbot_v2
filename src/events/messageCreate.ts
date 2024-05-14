@@ -16,7 +16,7 @@ export async function execute(message: Message<boolean>) {
 
     // Reply to !reload to deploy bot commands to discord
     if (message.content.toLowerCase() === `${prefix}reload`) {
-        if (config.STAFF_USER_ID.includes(message.author.id)) {
+        if (allGuildsMap.guildStaffUserIdMap.get(message.guildId!)?.includes(message.author.id)) {
             const numberOfCommands = await deployCommands()
                 .catch(error => {
                     console.error(error);
