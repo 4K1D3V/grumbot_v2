@@ -8,7 +8,7 @@ export const data = new SlashCommandBuilder()
 export async function execute(interaction: CommandInteraction) {
     await interaction.deferReply();
     const user: any = interaction.options.get('user') || interaction.user;
-    if (user.user.banner === null) {
+    if (user.user.banner === null || undefined) {
         await interaction.editReply("This user has no banner!");
         return;
     }
