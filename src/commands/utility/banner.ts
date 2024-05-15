@@ -7,10 +7,15 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction: CommandInteraction) {
     await interaction.deferReply();
+    var banner;
     const user = interaction.options.get('user')?.user || interaction.user;
-    if (user.banner === null || undefined) {
+    await user.fetch().then(user => {
+        banner = user.bannerURL({size: 4096});
+    })
+    if (banner === null || banner === undefined) {
         await interaction.editReply("This user has no banner!");
         return;
+    } else {
+        await interaction.editReply(`${banner}`);
     }
-    await interaction.editReply(`https://cdn.discordapp.com/banners/${user.id}/${user.banner}.png?size=2048`);
 }

@@ -11,6 +11,7 @@ export async function execute(interaction: CommandInteraction) {
     if (user.avatar === null || undefined) {
         await interaction.editReply("This user has no avatar!");
         return;
+    } else {
+        await interaction.editReply(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=4096`);
     }
-    await interaction.editReply(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=2048`);
 }
