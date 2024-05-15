@@ -1,5 +1,4 @@
 import { Message } from "discord.js";
-import { config } from "../config";
 import { deployCommands } from "../deploy-commands";
 import allGuildsMap from "../bot";
 
