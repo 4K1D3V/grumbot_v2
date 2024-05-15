@@ -7,10 +7,10 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction: CommandInteraction) {
     await interaction.deferReply();
-    const user: any = interaction.options.get('user') || interaction.user;
-    if (user.user.banner === null || undefined) {
+    const user = interaction.options.get('user')?.value || interaction.user;
+    if ((user as User).banner === null || undefined) {
         await interaction.editReply("This user has no banner!");
         return;
     }
-    await interaction.editReply(`https://cdn.discordapp.com/banners/${user.user.id}/${user.user.banner}.png?size=2048`);
+    await interaction.editReply(`https://cdn.discordapp.com/banners/${(user as User).id}/${(user as User).banner}.png?size=2048`);
 }
