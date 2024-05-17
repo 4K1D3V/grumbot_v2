@@ -28,7 +28,6 @@ export async function execute(interaction: CommandInteraction) {
             .setFooter({ text: `Kicked by ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() })
             .setTimestamp()
             .setThumbnail(target.avatarURL({ size: 64 }))
-            .setFooter({ text: `Kicked by ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() });
         await target.send({ embeds: [targetKickDMEmbed] });
     } catch (error) {
         // TODO: Add logs message if DM fails
