@@ -40,7 +40,7 @@ export async function execute(message: Message<boolean>) {
                                 buttonResponse.update({ content: "Application (/) commands reload cancelled.", components: [] });
                             }
                         }).catch(async () => {
-                            await response.edit({ content: "Confirmation not received within 10 econds, cancelling", components: [] })
+                            await response.edit({ content: "Confirmation not received within 10 seconds, cancelling", components: [] })
                         })
                 });
         } else message.reply("You do not have permission to do this! Only my developer can run this command!");
