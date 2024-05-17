@@ -78,6 +78,7 @@ function getTotalUsers() {
 
 var guildCommandPrefixMap: Map<string, string> = new Map();
 var guildStaffUserIdMap: Map<string,string[]> = new Map();
+var guildStaffRoleIdMap: Map<string, string> = new Map();
 
 export async function updateGuildMaps() {
     const allGuildsId: string[] = client.guilds.cache.map(guild => guild.id);
@@ -88,14 +89,14 @@ export async function updateGuildMaps() {
     allGuildsId.forEach(guildid => {
         allGuildsInSQL.find(guild => {
             if (guild.guild_id === guildid) {
-                guildCommandPrefixMap.set(guildid, guild.command_prefix as string);
-                var guildStaffUserId: string[] = guild.staff_user_id?.split(",")!;
-                guildStaffUserIdMap.set(guildid, guildStaffUserId);
+                guildCommandPrefixMap.set(guildid, guild.command_prefix!);
+                guildStaffUserIdMap.set(guildid, guild.staff_user_id?.split(",")!);
+                guildStaffRoleIdMap.set(guildid, guild.staff_role_id!);
             }
         })
     })
 }
 
 export default {
-    guildCommandPrefixMap, guildStaffUserIdMap
+    guildCommandPrefixMap, guildStaffUserIdMap, guildStaffRoleIdMap
 }
