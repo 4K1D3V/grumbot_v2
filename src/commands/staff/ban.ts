@@ -7,7 +7,6 @@ export const data = new SlashCommandBuilder()
     .addUserOption((target) => target.setName("target").setDescription("The user to ban.").setRequired(true))
     .addStringOption((reason) => reason.setName("reason").setDescription("The reason for the ban.").setRequired(false))
     .addBooleanOption((silent) => silent.setName("silent").setDescription("Whether to send a DM to the user.").setRequired(false))
-    .addBooleanOption((deleteMessages) => deleteMessages.setName("delete").setDescription("Whether to delete the user's messages.").setRequired(false))
     .setDMPermission(false)
     .setDefaultMemberPermissions(PermissionsBitField.Flags.BanMembers);
 
@@ -15,7 +14,6 @@ export async function execute(interaction: CommandInteraction) {
     const target = (interaction.options.get("target")?.member as GuildMember)
     const reason = (interaction.options.get("reason")?.value as string)
     const silent = (interaction.options.get("silent")?.value as boolean)
-    const deleteMessages = (interaction.options.get("delete")?.value as boolean)
     var message: string;
     if (!target) message = "Please provide a valid user to ban."
     if (target.id === interaction.user.id) message = "You cannot ban yourself."
