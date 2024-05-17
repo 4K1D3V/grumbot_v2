@@ -1,4 +1,4 @@
-import { CommandInteraction, SlashCommandBuilder } from "discord.js";
+import { CommandInteraction, PermissionsBitField, SlashCommandBuilder } from "discord.js";
 import dbRepository from "../../repository/db.repository";
 import CurrentGuild from "../../model/currentGuild.model";
 import { updateGuildMaps } from "../../bot";
@@ -22,19 +22,18 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction: CommandInteraction) {
     await interaction.deferReply();
-    if (interaction.user.id !== interaction.guild?.ownerId) {
-        if (!allGuildsMap.guildStaffUserIdMap.get(interaction.guildId!)?.includes(interaction.user.id)) {
-            await interaction.editReply({ content: "You don't have permission to run this command!" });
-            return;
+    if (interaction.memberPermissions?.has(PermissionsBitField.Flags.Administrator)) {
+        const commandPrefix = interaction.options.get("prefix")?.value;
+        const guild = {
+            guild_id: interaction.guildId!,
+            guild_name: interaction.guild?.name,
+            command_prefix: commandPrefix as string
         }
+        dbRepository.updateGuildCommandPrefix(guild as CurrentGuild);
+        await updateGuildMaps();
+        await interaction.editReply(`Updated Guild Command Prefix to - ${commandPrefix}`);
+    } else {
+        await interaction.editReply({ content: "You don't have permission to run this command!" });
     }
-    const commandPrefix = interaction.options.get("prefix")?.value;
-    const guild = {
-        guild_id: interaction.guildId!,
-        guild_name: interaction.guild?.name,
-        command_prefix: commandPrefix as string
-    }
-    dbRepository.updateGuildCommandPrefix(guild as CurrentGuild);
-    await updateGuildMaps();
-    await interaction.editReply(`Updated Guild Command Prefix to - ${commandPrefix}`);
 }
+
