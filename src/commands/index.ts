@@ -13,6 +13,7 @@ import * as removestaff from "./admin/removestaff";
 import * as viewprefix from "./admin/viewprefix"
 import * as viewstaff from "./utility/viewstaff"
 import * as staffrole from "./admin/staffrole"
+import * as kick from "./staff/kick"
 
 export const commands = {
     ping, 
@@ -29,5 +30,6 @@ export const commands = {
     removestaff,
     viewprefix,
     viewstaff,
-    staffrole
+    staffrole,
+    kick
 };
