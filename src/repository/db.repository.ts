@@ -7,8 +7,8 @@ interface IGuildRepository {
     getAllGuilds(): Promise<CurrentGuild[]>;
     getGuildById(guildId: string): Promise<CurrentGuild>;
     updateGuildCommandPrefix(guild: CurrentGuild): Promise<CurrentGuild>;
-    deleteGuild(guildId: string): Promise<void>;
     updateGuildStaff(guild: CurrentGuild): Promise<CurrentGuild>;
+    updateGuildStaffRole(guildStaffRoleId: string, guildId: string): Promise<string>;
 }
 
 class GuildRepository implements IGuildRepository {
@@ -74,8 +74,17 @@ class GuildRepository implements IGuildRepository {
         })
     }
 
-    deleteGuild(guildId: string): Promise<void> {
-        throw new Error("Method not implemented.");
+    updateGuildStaffRole(guildStaffRoleId: string, guildId: string): Promise<string> {
+        return new Promise((resolve, reject) => {
+            connection.query<ResultSetHeader>(
+                `UPDATE guilds SET staff_role_id = ? WHERE guild_id = ?`,
+                [guildStaffRoleId, guildId],
+                (error, result) => {
+                    if (error) reject(error);
+                    else resolve(result as unknown as string);
+                }
+            )
+        })
     }
 
 }
