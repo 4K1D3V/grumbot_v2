@@ -14,6 +14,7 @@ import * as viewprefix from "./admin/viewprefix"
 import * as viewstaff from "./utility/viewstaff"
 import * as staffrole from "./admin/staffrole"
 import * as kick from "./staff/kick"
+import * as ban from "./staff/ban"
 
 export const commands = {
     ping, 
@@ -31,5 +32,6 @@ export const commands = {
     viewprefix,
     viewstaff,
     staffrole,
-    kick
+    kick,
+    ban
 };
