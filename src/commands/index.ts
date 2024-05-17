@@ -10,7 +10,7 @@ import * as font from "./fun/font";
 import * as changeprefix from "./admin/changeprefix";
 import * as addstaff from "./admin/addstaff";
 import * as removestaff from "./admin/removestaff";
-import * as viewprefix from "./staff/viewprefix"
+import * as viewprefix from "./admin/viewprefix"
 import * as viewstaff from "./utility/viewstaff"
 import * as staffrole from "./admin/staffrole"
 
