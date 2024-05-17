@@ -14,24 +14,12 @@ export async function execute(interaction: CommandInteraction) {
     const reason = (interaction.options.get("reason")?.value as string) || "No reason provided!";
     const silent = interaction.options.get("silent")?.value || false;
     var message;
-    if (!target) {
-        message = `Please provide a valid user to kick!`;
-    }
-    if (target.id === interaction.client.user.id) {
-        message = `I cannot kick myself DUHH!`;
-    }
-    if (target.id === interaction.user.id) {
-        message = `You cannot kick yourself!`;
-    }
-    if (target.roles.highest.position >= (interaction.member?.roles as GuildMemberRoleManager).highest.position) {
-        message = `You cannot kick this user as they are higher than or equal to you in the role hierarchy!`;
-    }
-    if (!target.kickable) {
-        message = `This user is not kickable!`;
-    }
-    if (reason.length > 512) {
-        message = `Reason cannot be longer than 512 characters!`;
-    }
+    if (!target) message = `Please provide a valid user to kick!`;
+    if (target.id === interaction.client.user.id) message = `I cannot kick myself DUHH!`;
+    if (target.id === interaction.user.id) message = `You cannot kick yourself!`;
+    if (target.roles.highest.position >= (interaction.member?.roles as GuildMemberRoleManager).highest.position) message = `You cannot kick this user as they are higher than or equal to you in the role hierarchy!`;
+    if (!target.kickable) message = `This user is not kickable!`;
+    if (reason.length > 512) message = `Reason cannot be longer than 512 characters!`;
 
     try {
         const targetKickDMEmbed = new EmbedBuilder()
