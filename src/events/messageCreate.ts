@@ -2,7 +2,6 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Message } from "discord.j
 import { deployCommands } from "../deploy-commands";
 import allGuildsMap from "../bot";
 import { config } from "../config";
-import { response } from "express";
 
 export async function execute(message: Message<boolean>) {
     if (message.author.bot) return;
