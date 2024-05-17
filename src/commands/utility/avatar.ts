@@ -4,6 +4,7 @@ export const data = new SlashCommandBuilder()
     .setName("avatar")
     .setDescription("sends the user's avatar")
     .addUserOption(option => option.setName("user").setDescription("The user you want to get the avatar of").setRequired(false))
+    .setDMPermission(false);
 
 export async function execute(interaction: CommandInteraction) {
     await interaction.deferReply();

@@ -4,7 +4,8 @@ import { EmbedBuilder } from "@discordjs/builders";
 
 export const data = new SlashCommandBuilder()
     .setName("viewstaff")
-    .setDescription("Sends the current staff members of the Guild");
+    .setDescription("Sends the current staff members of the Guild")
+    .setDMPermission(false);
 
 export async function execute(interaction: CommandInteraction) {
     await interaction.deferReply();
