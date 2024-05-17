@@ -39,6 +39,8 @@ export async function execute(interaction: CommandInteraction) {
                 await interaction.editReply(`User <@${userToRemove?.id}> is not a staff member! Run \`/addstaff\` to add a new staff.`)
             }
         }
+    } else {
+        await interaction.editReply({ content: "You don't have permission to run this command!" });
     }
 }
 
