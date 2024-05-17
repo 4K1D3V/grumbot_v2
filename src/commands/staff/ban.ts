@@ -6,7 +6,7 @@ export const data = new SlashCommandBuilder()
     .setDescription("Ban someone from the server.")
     .addUserOption((target) => target.setName("target").setDescription("The user to ban.").setRequired(true))
     .addStringOption((reason) => reason.setName("reason").setDescription("The reason for the ban.").setRequired(false))
-    .addBooleanOption((silent) => silent.setName("silent").setDescription("Whether to send a DM to the user.").setRequired(false))
+    .addBooleanOption((silent) => silent.setName("silent").setDescription("Whether to send the kick message in channel.").setRequired(false))
     .setDMPermission(false)
     .setDefaultMemberPermissions(PermissionsBitField.Flags.BanMembers);
 
