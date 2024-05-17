@@ -18,7 +18,7 @@ export async function execute(interaction: CommandInteraction) {
     if (!target) message = "Please provide a valid user to ban."
     if (target.id === interaction.user.id) message = "You cannot ban yourself."
     if (target.roles.highest.position >= (interaction.member?.roles as GuildMemberRoleManager).highest.position) message = "You cannot ban this user as they are higher than or equal to you in the role hierarchy."
-    if (!target.kickable) message = "This user is not kickable."
+    if (!target.bannable) message = "This user is not banable."
     if (reason.length > 512) message = "Reason cannot be longer than 512 characters."
     try {
         const targetBanDMEmbed = new EmbedBuilder()
