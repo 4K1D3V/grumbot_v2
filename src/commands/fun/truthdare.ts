@@ -21,7 +21,7 @@ export const data = new SlashCommandBuilder()
 export async function execute(interaction: CommandInteraction) {
     await interaction.deferReply();
     const choice = interaction.options.get('type')?.value;
-    const response = await getQuestion(choice);
+    const response = await getQuestion(choice as string);
     const typeOfQuestion = response.type === "wyr" ? "Would You Rather" : response.type === "nhie" ? "Never Have I Ever" : response.type;
     const questionEmbed = new EmbedBuilder()
         .setTitle("Truth or Dare")
@@ -36,7 +36,7 @@ export async function execute(interaction: CommandInteraction) {
     await interaction.editReply({ embeds: [questionEmbed] });
 }
 
-async function getQuestion(choice: string | number | boolean | undefined) {
+async function getQuestion(choice: string) {
     const randomNumber = Math.floor(Math.random() * 3) + 1;
     const rating = randomNumber === 1 ? "pg" : randomNumber === 2 ? "pg13" : "r";
     const options: AxiosRequestConfig = {

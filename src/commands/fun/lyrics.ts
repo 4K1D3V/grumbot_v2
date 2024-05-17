@@ -22,8 +22,8 @@ export async function execute(interaction: CommandInteraction) {
     await interaction.deferReply();
     const songName = interaction.options.get('song')?.value;
     const artistName = interaction.options.get('artist')?.value;
-    const lyrics = await getLyrics(songName, artistName);
-    const songDetails = await getSongDetails(songName, artistName);
+    const lyrics = await getLyrics(songName as string, artistName as string);
+    const songDetails = await getSongDetails(songName as string, artistName as string);
     if (songDetails === undefined || songDetails === null) {
         interaction.editReply(`Grumbot could not find the song ${songName} by ${artistName} :(`);
     }
@@ -54,7 +54,7 @@ export async function execute(interaction: CommandInteraction) {
     }
 }
 
-async function getLyrics(songName: string | number | boolean | undefined, artistName: string | number | boolean | undefined) {
+async function getLyrics(songName: string, artistName: string) {
     const lyricsOptions: AxiosRequestConfig = {
         method: 'GET',
         url: `https://api.lyrics.ovh/v1/${artistName}/${songName}`,
@@ -75,7 +75,7 @@ async function getLyrics(songName: string | number | boolean | undefined, artist
     }
 }
 
-async function getSongDetails(songName: string | number | boolean | undefined, artistName: string | number | boolean | undefined) {
+async function getSongDetails(songName: string, artistName: string) {
     const API_URL = `http://api.musixmatch.com/ws/1.1/track.search?q_track=${songName}&q_artist=${artistName}&page_size=1&page=1&apikey=${config.MUSIXMATCH_API_KEY}`;
     try {
         const response = await axios.get(API_URL);

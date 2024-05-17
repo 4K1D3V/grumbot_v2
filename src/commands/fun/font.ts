@@ -33,7 +33,6 @@ export async function execute(interaction: CommandInteraction) {
     await interaction.deferReply();
     const text = interaction.options.get('text')?.value as string;
     const font = interaction.options.get('font')?.value;
-    // @ts-ignore
     const convertedText = Font.apply(text, font);
     await interaction.editReply(convertedText);
 }
