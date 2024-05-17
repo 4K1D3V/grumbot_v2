@@ -11,7 +11,7 @@ export async function execute(message: Message<boolean>) {
 
     // Reply to hello grumbot
     if (message.content.toLowerCase().startsWith("hello grumbot")) {
-        message.reply("Beep Boop .... Beep Beep, I am Grumbot. I am created by <@1216042650096898189>. I am still in development.")
+        message.reply(`Beep Boop .... Beep Beep, I am Grumbot. I am created by <@1216042650096898189>. I am still in development.\nClient-Server Ping - ${message.client.ws.ping}ms`);
     }
 
     // Reply to !reload to deploy bot commands to discord
