@@ -1,4 +1,4 @@
-import { CommandInteraction, SlashCommandBuilder } from "discord.js";
+import { CommandInteraction, PermissionsBitField, SlashCommandBuilder } from "discord.js";
 import allGuildsMap, { updateGuildMaps } from "../../bot";
 import dbRepository from "../../repository/db.repository";
 import CurrentGuild from "../../model/currentGuild.model";
@@ -15,30 +15,29 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction: CommandInteraction) {
     await interaction.deferReply();
-    if (interaction.user.id !== interaction.guild?.ownerId) {
-        if (!allGuildsMap.guildStaffUserIdMap.get(interaction.guildId!)?.includes(interaction.user.id)) {
-            await interaction.editReply({ content: "You don't have permission to run this command!" });
-            return;
-        }
-    }
-    const userToAdd = interaction.options.get("user")?.user;
-    const currentStaff = allGuildsMap.guildStaffUserIdMap.get(interaction.guildId as string);
-    var staffToAdd: string[] = [];
-    if (currentStaff === undefined) {
-        staffToAdd.push(userToAdd?.id!);
-        await updateStaff(interaction, staffToAdd);
-        await interaction.editReply(`Added <@${userToAdd?.id}> to Staff!`)
-    } else {
-        staffToAdd = currentStaff;
-        if (staffToAdd.includes(userToAdd?.id!)) {
-            await interaction.editReply(`User <@${userToAdd?.id}> already exists as staff!`);
-            return;
-        } 
-        else {
+    if (interaction.memberPermissions?.has(PermissionsBitField.Flags.Administrator)) {
+        const userToAdd = interaction.options.get("user")?.user;
+        const currentStaff = allGuildsMap.guildStaffUserIdMap.get(interaction.guildId as string);
+        var staffToAdd: string[] = [];
+        if (currentStaff === undefined) {
             staffToAdd.push(userToAdd?.id!);
             await updateStaff(interaction, staffToAdd);
             await interaction.editReply(`Added <@${userToAdd?.id}> to Staff!`)
+        } else {
+            staffToAdd = currentStaff;
+            if (staffToAdd.includes(userToAdd?.id!)) {
+                await interaction.editReply(`User <@${userToAdd?.id}> already exists as staff!`);
+                return;
+            }
+            else {
+                staffToAdd.push(userToAdd?.id!);
+                await updateStaff(interaction, staffToAdd);
+                await interaction.editReply(`Added <@${userToAdd?.id}> to Staff!`)
+            }
         }
+    }
+    else {
+        await interaction.editReply({ content: "You don't have permission to run this command!" });
     }
 }
 
