@@ -11,37 +11,36 @@ export const data = new SlashCommandBuilder()
             .setName("user")
             .setDescription("User to add to staff")
             .setRequired(true)
-    );
+    )
+    .setDMPermission(false)
+    .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator);
 
 export async function execute(interaction: CommandInteraction) {
     await interaction.deferReply();
-    if (interaction.memberPermissions?.has(PermissionsBitField.Flags.Administrator)) {
-        const userToRemove = interaction.options.get("user")?.user;
-        const currentStaff = allGuildsMap.guildStaffUserIdMap.get(interaction.guildId as string);
-        var staffToUpdate: string[] = [];
-        if (currentStaff === undefined) {
-            await interaction.editReply(`There are no staff in the Guild Currently! Please run the command \`/addstaff\` to add a staff.`)
-        } else {
-            if (currentStaff.includes(userToRemove?.id!)) {
-                if (currentStaff[1] === undefined) {
-                    staffToUpdate === null;
-                }
-                else {
-                    const index = currentStaff.indexOf(userToRemove?.id!)
-                    if (index > -1) {
-                        currentStaff.splice(index, 1);
-                        staffToUpdate = currentStaff;
-                    }
-                }
-                updateStaff(interaction, staffToUpdate);
-                interaction.editReply(`Removed <@${userToRemove?.id}> from Staff!`)
-            } else {
-                await interaction.editReply(`User <@${userToRemove?.id}> is not a staff member! Run \`/addstaff\` to add a new staff.`)
-            }
-        }
+    const userToRemove = interaction.options.get("user")?.user;
+    const currentStaff = allGuildsMap.guildStaffUserIdMap.get(interaction.guildId as string);
+    var staffToUpdate: string[] = [];
+    if (currentStaff === undefined) {
+        await interaction.editReply(`There are no staff in the Guild Currently! Please run the command \`/addstaff\` to add a staff.`)
     } else {
-        await interaction.editReply({ content: "You don't have permission to run this command!" });
+        if (currentStaff.includes(userToRemove?.id!)) {
+            if (currentStaff[1] === undefined) {
+                staffToUpdate === null;
+            }
+            else {
+                const index = currentStaff.indexOf(userToRemove?.id!)
+                if (index > -1) {
+                    currentStaff.splice(index, 1);
+                    staffToUpdate = currentStaff;
+                }
+            }
+            updateStaff(interaction, staffToUpdate);
+            interaction.editReply(`Removed <@${userToRemove?.id}> from Staff!`)
+        } else {
+            await interaction.editReply(`User <@${userToRemove?.id}> is not a staff member! Run \`/addstaff\` to add a new staff.`)
+        }
     }
+
 }
 
 async function updateStaff(interaction: CommandInteraction, staffToAdd: string[]) {
