@@ -23,8 +23,8 @@ export async function execute(interaction: CommandInteraction) {
             await interaction.editReply(`There are no staff in the Guild Currently! Please run the command \`/addstaff\` to add a staff.`)
         } else {
             if (currentStaff.includes(userToRemove?.id!)) {
-                if (currentStaff.length === 1) {
-                    staffToUpdate === undefined;
+                if (currentStaff[1] === undefined) {
+                    staffToUpdate === null;
                 }
                 else {
                     const index = currentStaff.indexOf(userToRemove?.id!)
