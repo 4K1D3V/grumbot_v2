@@ -20,7 +20,6 @@ export async function execute(interaction: CommandInteraction) {
     if (target.roles.highest.position >= (interaction.member?.roles as GuildMemberRoleManager).highest.position) message = `You cannot kick this user as they are higher than or equal to you in the role hierarchy!`;
     if (!target.kickable) message = `This user is not kickable!`;
     if (reason.length > 512) message = `Reason cannot be longer than 512 characters!`;
-
     try {
         const targetKickDMEmbed = new EmbedBuilder()
             .setTitle(`You have been kicked from the server - ${interaction.guild?.name}`)
@@ -33,7 +32,6 @@ export async function execute(interaction: CommandInteraction) {
         // TODO: Add logs message if DM fails
         console.log(error);
     }
-
     try {
         await target.kick(reason);
         message = `Kicked ${target.user.tag} for ${reason}`;
@@ -42,11 +40,7 @@ export async function execute(interaction: CommandInteraction) {
         message = `Failed to kick ${target.user.tag}. Please try again later`;
         console.log(error);
     }
-
-    if (silent) {
-        await interaction.reply({ content: message, ephemeral: true });
-    } else {
-        await interaction.reply({ content: message, ephemeral: false });
-    }
+    if (silent) await interaction.reply({ content: message, ephemeral: true });
+    else await interaction.reply({ content: message, ephemeral: false });
 }
 
