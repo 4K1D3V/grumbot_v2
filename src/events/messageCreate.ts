@@ -20,33 +20,27 @@ export async function execute(message: Message<boolean>) {
             const confirmButton = new ButtonBuilder().setCustomId("confirm-reload").setLabel("Confirm").setStyle(ButtonStyle.Secondary).setEmoji('✅');
             const denyButton = new ButtonBuilder().setCustomId("deny-reload").setLabel("Deny").setStyle(ButtonStyle.Primary).setEmoji('❌');
             const buttonRow = new ActionRowBuilder<ButtonBuilder>().addComponents(confirmButton, denyButton);
-            const response = await message.reply({
-                content: "Confirm Reload Action?",
-                components: [buttonRow]
-            });
-            try {
-                await message.reply({ content: "Confirm Reload Action?", components: [buttonRow] })
-                    .then(async response => {
-                        const buttonResponse = await response.awaitMessageComponent({ filter: (i: any) => i.user.id === message.author.id, time: 10_000 });
-                        if (buttonResponse.customId === 'confirm-reload') {
-                            const numberOfCommands = await deployCommands()
-                                .catch(error => {
-                                    console.error(error);
-                                    message.reply("There was an error while reloading the application (/) commands!");
-                                });
-                            buttonResponse.update({ content: "Reloading application (/) commands...", components: [] })
-                                .then(msg => {
-                                    setTimeout(() => {
-                                        msg.edit(`Successfully reloaded ${numberOfCommands} application (/) commands.`);
-                                    }, 2000);
-                                })
-                        } else if (buttonResponse.customId === 'deny-reload') {
-                            buttonResponse.update({ content: "Application (/) commands reload cancelled.", components: [] });
-                        }
-                    })
-            } catch (err) {
-                await response.edit({ content: "Confirmation not received within 10 econds, cancelling", components: [] })
-            }
+            await message.reply({ content: "Confirm Reload Action?", components: [buttonRow] })
+                .then(async response => {
+                    const buttonResponse = await response.awaitMessageComponent({ filter: (i: any) => i.user.id === message.author.id, time: 10_000 });
+                    if (buttonResponse.customId === 'confirm-reload') {
+                        const numberOfCommands = await deployCommands()
+                            .catch(error => {
+                                console.error(error);
+                                message.reply("There was an error while reloading the application (/) commands!");
+                            });
+                        buttonResponse.update({ content: "Reloading application (/) commands...", components: [] })
+                            .then(msg => {
+                                setTimeout(() => {
+                                    msg.edit(`Successfully reloaded ${numberOfCommands} application (/) commands.`);
+                                }, 2000);
+                            })
+                    } else if (buttonResponse.customId === 'deny-reload') {
+                        buttonResponse.update({ content: "Application (/) commands reload cancelled.", components: [] });
+                    }
+                }).catch(async () => {
+                    await message.edit({ content: "Confirmation not received within 10 econds, cancelling", components: [] })
+                })
         } else message.reply("You do not have permission to do this! Only my developer can run this command!");
     }
 
