@@ -9,7 +9,7 @@ export const data = new SlashCommandBuilder()
     .addBooleanOption((silent) => silent.setName("silent").setDescription("Whether to send a DM to the user.").setRequired(false))
     .addBooleanOption((deleteMessages) => deleteMessages.setName("delete").setDescription("Whether to delete the user's messages.").setRequired(false))
     .setDMPermission(false)
-    .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator);
+    .setDefaultMemberPermissions(PermissionsBitField.Flags.BanMembers);
 
 export async function execute(interaction: CommandInteraction) {
     const target = (interaction.options.get("target")?.member as GuildMember)
