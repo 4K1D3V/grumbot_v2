@@ -11,7 +11,7 @@ export async function execute(oldMessage: Message<boolean>, newMessage: Message<
     const logsChannelId = allGuildsMap.guildLogsChannelMap.get(oldMessage.guildId!);
     const isLogsChannelSet = logsChannelId !== undefined;
     const logsChannel = isLogsChannelSet ? oldMessage.client.channels.cache.get(logsChannelId) as TextChannel : undefined;
-    if (!logsChannel) return;
+    if (!logsChannel && allGuildsMap.guildIsLogsEnabledMap.get(oldMessage.guildId!) === 0) return;
     const messageEmbed = new EmbedBuilder();
     messageEmbed
         .setTitle("Message Edited")
