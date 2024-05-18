@@ -7,4 +7,5 @@ export default interface CurrentGuild extends RowDataPacket {
     staff_user_id?: string,
     staff_role_id?: string,
     logs_channel_id?: string,
+    is_logs_enabled?: number
 }
