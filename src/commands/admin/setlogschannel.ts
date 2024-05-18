@@ -19,8 +19,12 @@ export async function execute(interaction: CommandInteraction) {
     await interaction.deferReply();
     const channel = interaction.options.get("channel")?.channel as TextChannel;
     if (!channel) await interaction.editReply({ content: "Please provide a valid channel."});
-    else await interaction.editReply({ content: `The channel for the server logs has been set to <#${channel.id}>.`});
-    await dbRepository.updateGuildLogsChannel(channel.id, interaction.guildId!);
+    if (!channel.permissionsFor(interaction.client.user!)?.has(PermissionsBitField.Flags.SendMessages))
+        await interaction.editReply({ content: "I do not have the permissions to send messages to this channel."});
+    else {
+        await dbRepository.updateGuildLogsChannel(channel.id, interaction.guildId!);
+        await interaction.editReply({ content: `The channel for the server logs has been set to <#${channel.id}>.`});
+    }
     await updateGuildMaps();
 }
 
