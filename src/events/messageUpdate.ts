@@ -1,6 +1,11 @@
 import { EmbedBuilder, Message, TextChannel } from "discord.js";
 import { config } from "../config";
 
+/**
+ * Event fired each time a message is updated
+ * @param oldMessage - The old message object
+ * @param newMessage - The new message object
+ */
 export async function execute(oldMessage: Message<boolean>, newMessage: Message<boolean>) {
     if (oldMessage.author.bot || newMessage.author.bot) return;
     else {

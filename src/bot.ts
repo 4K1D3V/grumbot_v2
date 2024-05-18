@@ -9,7 +9,9 @@ const client = new Client({
     intents: ["Guilds", "GuildMessages", "DirectMessages", "MessageContent"],
 });
 
-// Event fired once, when the client is ready
+/**
+ * Event fired once, when the client is ready
+ */
 client.once("ready", async () => {
     console.log("Discord bot is ready! 🤖");
     await updateGuildMaps();
@@ -32,23 +34,31 @@ client.once("ready", async () => {
     }, 300_000);
 });
 
-// Event fired each time the bot is added to a guild
+/**
+ * Event fired each time the bot is added to a guild
+ */
 client.on("guildCreate", async (guild: Guild) => {
     await updateGuildMaps();
     events.guildCreate.execute(guild);
 });
 
-// Interaction Create Events, redirects slash commands to respective files
+/**
+ * Event fired each time the bot is added to a guild
+ */
 client.on("interactionCreate", async (interaction) => {
     events.interactionCreate.execute(interaction);
 });
 
-// Message Create Events
+/**
+ * Event fired each time a message is sent
+ */
 client.on('messageCreate', async (message) => {
     events.messageCreate.execute(message)
 })
 
-// Message Update Events
+/**
+ * Event fired each time a message is updated
+ */
 client.on('messageUpdate', async (oldMessage, newMessage) => {
     events.messageUpdate.execute(oldMessage as Message<boolean>, newMessage as Message<boolean>);
 })
@@ -64,12 +74,20 @@ app.listen(port, () => {
     console.log(`Server is listening on port ${port}!`);
 })
 
+/**
+ * Gets the total number of guilds
+ * @returns The total number of guilds
+ */
 function getTotalGuilds() {
     var guildCount: number = 0;
     client.guilds.cache.map(guild => guildCount++);
     return guildCount;
 }
 
+/**
+ * Gets the total number of users
+ * @returns The total number of users
+ */
 function getTotalUsers() {
     var memberCount: number = 0;
     client.guilds.cache.map(guild => memberCount += guild.memberCount)
@@ -80,6 +98,9 @@ var guildCommandPrefixMap: Map<string, string> = new Map();
 var guildStaffUserIdMap: Map<string,string[]> = new Map();
 var guildStaffRoleIdMap: Map<string, string> = new Map();
 
+/**
+ * Updates the guild maps in memory
+ */
 export async function updateGuildMaps() {
     const allGuildsId: string[] = client.guilds.cache.map(guild => guild.id);
     var allGuildsInSQL: CurrentGuild[];

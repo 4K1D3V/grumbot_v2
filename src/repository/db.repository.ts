@@ -12,6 +12,11 @@ interface IGuildRepository {
 }
 
 class GuildRepository implements IGuildRepository {
+    /**
+     * Saves the guild in SQL Databasee
+     * @param guild - The guild to save
+     * @returns The saved guild
+     */
     save(guild: CurrentGuild): Promise<CurrentGuild> {
         return new Promise((resolve, reject) => {
             connection.query<ResultSetHeader>(
@@ -25,6 +30,11 @@ class GuildRepository implements IGuildRepository {
             );
         });
     }
+
+    /**
+     * Gets all the guilds from the SQL Database
+     * @returns All the guilds
+     */
     getAllGuilds(): Promise<CurrentGuild[]> {
         return new Promise((resolve,reject) => {
             connection.query<ResultSetHeader>(
@@ -36,6 +46,12 @@ class GuildRepository implements IGuildRepository {
             )
         })
     }
+
+    /**
+     * Gets the guild by its ID
+     * @param guildId - The ID of the guild
+     * @returns The guild
+     */
     getGuildById(guildId: string): Promise<CurrentGuild> {
         return new Promise((resolve, reject) => {
             connection.query<ResultSetHeader>(
@@ -48,6 +64,12 @@ class GuildRepository implements IGuildRepository {
             )
         })
     }
+
+    /**
+     * Updates the command prefix of the guild
+     * @param guild - The guild to update
+     * @returns The updated guild
+     */
     updateGuildCommandPrefix(guild: CurrentGuild): Promise<CurrentGuild> {
         return new Promise((resolve, reject) => {
             connection.query<ResultSetHeader>(
@@ -61,6 +83,11 @@ class GuildRepository implements IGuildRepository {
         })
     }
 
+    /**
+     * Updates the staff user of the guild
+     * @param guild - The guild to update
+     * @returns The updated guild
+     */
     updateGuildStaff(guild: CurrentGuild): Promise<CurrentGuild> {
         return new Promise((resolve, reject) => {
             connection.query<ResultSetHeader>(
@@ -74,6 +101,12 @@ class GuildRepository implements IGuildRepository {
         })
     }
 
+    /**
+     * Updates the staff role of the guild
+     * @param guildStaffRoleId - The ID of the staff role
+     * @param guildId - The ID of the guild
+     * @returns The updated guild
+     */
     updateGuildStaffRole(guildStaffRoleId: string, guildId: string): Promise<string> {
         return new Promise((resolve, reject) => {
             connection.query<ResultSetHeader>(

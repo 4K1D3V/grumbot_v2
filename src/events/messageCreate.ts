@@ -3,6 +3,10 @@ import { deployCommands } from "../deploy-commands";
 import allGuildsMap from "../bot";
 import { config } from "../config";
 
+/**
+ * Event fired each time a message is sent, checks if the message is from a bot, if not, executes the commands
+ * @param message - The message to execute
+ */
 export async function execute(message: Message<boolean>) {
     if (message.author.bot) return;
 
