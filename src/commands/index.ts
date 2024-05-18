@@ -16,6 +16,8 @@ import * as staffrole from "./admin/staffrole"
 import * as kick from "./staff/kick"
 import * as ban from "./staff/ban"
 import * as mute from "./staff/mute"
+import * as viewlogschannel from "./admin/viewlogschannel"
+import * as setlogschannel from "./admin/setlogschannel"
 
 export const commands = {
     ping, 
@@ -35,6 +37,8 @@ export const commands = {
     staffrole,
     kick,
     ban,
-    mute
+    mute,
+    viewlogschannel,
+    setlogschannel
 };
 
