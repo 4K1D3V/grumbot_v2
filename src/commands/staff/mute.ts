@@ -36,8 +36,9 @@ export async function execute(interaction: CommandInteraction) {
     const silent = (interaction.options.get("silent")?.value as boolean);
     var message: string | undefined;
     if (!target) message = "Please provide a valid user to mute."
-    else if (target.id === interaction.user.id) message = "You cannot ban yourself."
-    else if (target.roles.highest.position >= (interaction.member?.roles as GuildMemberRoleManager).highest.position) message = "You cannot ban this user as they are higher than or equal to you in the role hierarchy."
+    else if (target.id === interaction.client.user.id) message = `I cannot mute myself DUHH!`;
+    else if (target.id === interaction.user.id) message = "You cannot mute yourself."
+    else if (target.roles.highest.position >= (interaction.member?.roles as GuildMemberRoleManager).highest.position) message = "You cannot mute this user as they are higher than or equal to you in the role hierarchy."
     else if (reason !== undefined) if (reason.length! > 512) message = "Reason cannot be longer than 512 characters."
     else {
         try {
