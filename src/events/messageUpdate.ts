@@ -1,5 +1,6 @@
 import { EmbedBuilder, Message, TextChannel } from "discord.js";
 import { config } from "../config";
+import allGuildsMap from "../bot";
 
 /**
  * Event fired each time a message is updated
@@ -7,24 +8,22 @@ import { config } from "../config";
  * @param newMessage - The new message object
  */
 export async function execute(oldMessage: Message<boolean>, newMessage: Message<boolean>) {
+    const logsChannelId = allGuildsMap.guildLogsChannelMap.get(oldMessage.guildId!);
+    const isLogsChannelSet = logsChannelId !== undefined;
+    const logsChannel = isLogsChannelSet ? oldMessage.client.channels.cache.get(logsChannelId) as TextChannel : undefined;
+    if (!logsChannel) return;
+    const messageEmbed = new EmbedBuilder();
+    messageEmbed
+        .setTitle("Message Edited")
+        .setDescription(`Messag edited by <@${oldMessage.author.id}> in <#${oldMessage.channel.id}>`)
+        .setTimestamp()
+        .setFooter({ text: "Grumbot", iconURL: `${config.BOT_IMAGE}` });
     if (oldMessage.author.bot || newMessage.author.bot) return;
     else {
-        if (oldMessage.content.length >= 1024 || newMessage.content.length >= 1024) {
-
-        }
-        else {
-            const messageEmbed = new EmbedBuilder();
-            messageEmbed
-                .setTitle("Message Edited")
-                .setDescription(`Messag edited by <@${oldMessage.author.id}> in <#${oldMessage.channel.id}>`)
-                .addFields(
-                    { name: "Message Content", value: `Changed from ${oldMessage.content} to ${newMessage.content}`, inline: false },
-                    { name: "Edited at", value: `${newMessage.editedAt}`, inline: false }
-                )
-                .setTimestamp()
-                .setFooter({ text: "Grumbot", iconURL: `${config.BOT_IMAGE}` });
-            const channel: TextChannel = oldMessage.client.channels.cache.get("1239268841201078363") as TextChannel
-            await channel.send({ content: "Message Edit Detected", embeds: [messageEmbed]}); 
-        }
+        messageEmbed.addFields(
+            { name: "Message Content", value: `Changed from ${oldMessage.content.substring(0, 450)} to ${newMessage.content.substring(0, 450)}`, inline: false },
+            { name: "Edited at", value: `${newMessage.editedAt}`, inline: false }
+        )
+        await logsChannel?.send({ content: "Message Edit Detected", embeds: [messageEmbed] });
     }
 }
