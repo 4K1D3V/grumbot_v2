@@ -97,6 +97,7 @@ function getTotalUsers() {
 var guildCommandPrefixMap: Map<string, string> = new Map();
 var guildStaffUserIdMap: Map<string,string[]> = new Map();
 var guildStaffRoleIdMap: Map<string, string> = new Map();
+var guildLogsChannelMap: Map<string, string> = new Map();
 
 /**
  * Updates the guild maps in memory
@@ -113,11 +114,13 @@ export async function updateGuildMaps() {
                 guildCommandPrefixMap.set(guildid, guild.command_prefix!);
                 guildStaffUserIdMap.set(guildid, guild.staff_user_id?.split(",")!);
                 guildStaffRoleIdMap.set(guildid, guild.staff_role_id!);
+                guildLogsChannelMap.set(guildid, guild.logs_channel_id!);
             }
         })
     })
 }
 
 export default {
-    guildCommandPrefixMap, guildStaffUserIdMap, guildStaffRoleIdMap
+    guildCommandPrefixMap, guildStaffUserIdMap, guildStaffRoleIdMap, guildLogsChannelMap
 }
+
