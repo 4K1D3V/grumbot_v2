@@ -1,11 +1,17 @@
-import { CommandInteraction, PermissionsBitField, SlashCommandBuilder, TextChannel } from "discord.js";
+import { ChannelType, CommandInteraction, PermissionsBitField, SlashCommandBuilder, TextChannel } from "discord.js";
 import dbRepository from "../../repository/db.repository";
 import { updateGuildMaps } from "../../bot";
 
 export const data = new SlashCommandBuilder()
     .setName("setlogschannel")
     .setDescription("Set the channel for the server logs.")
-    .addChannelOption((channel) => channel.setName("channel").setDescription("The channel to send the logs to.").setRequired(true))
+    .addChannelOption((channel) => 
+        channel
+            .setName("channel")
+            .setDescription("The channel to send the logs to.")
+            .setRequired(true)
+            .addChannelTypes(ChannelType.GuildText)
+        )
     .setDMPermission(false)
     .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator);
 
