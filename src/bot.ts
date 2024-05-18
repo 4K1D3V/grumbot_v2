@@ -103,6 +103,7 @@ var guildLogsChannelMap: Map<string, string> = new Map();
  * Updates the guild maps in memory
  */
 export async function updateGuildMaps() {
+    console.log("Started updating All Guild Maps")
     const allGuildsId: string[] = client.guilds.cache.map(guild => guild.id);
     var allGuildsInSQL: CurrentGuild[];
     await dbRepository.getAllGuilds().then(guilds => {
@@ -118,6 +119,7 @@ export async function updateGuildMaps() {
             }
         })
     })
+    console.log("Finished updating All Guild Maps");
 }
 
 export default {
