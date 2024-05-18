@@ -1,4 +1,5 @@
-import { CommandInteraction, EmbedBuilder, GuildMember, GuildMemberRoleManager, PermissionsBitField, SlashCommandBuilder } from "discord.js";
+import { CommandInteraction, EmbedBuilder, GuildMember, GuildMemberRoleManager, PermissionsBitField, SlashCommandBuilder, TextChannel } from "discord.js";
+import allGuildsMap from "../../bot";
 
 export const data = new SlashCommandBuilder()
     .setName("kick")
@@ -10,6 +11,9 @@ export const data = new SlashCommandBuilder()
     .setDefaultMemberPermissions(PermissionsBitField.Flags.KickMembers);
 
 export async function execute(interaction: CommandInteraction) {
+    const logsChannelId = allGuildsMap.guildLogsChannelMap.get(interaction.guildId!);
+    const isLogsChannelSet = logsChannelId !== undefined;
+    const logsChannel = isLogsChannelSet ? interaction.client.channels.cache.get(logsChannelId) as TextChannel : undefined;
     const target = interaction.options.get("user")?.member as GuildMember;
     const reason = (interaction.options.get("reason")?.value as string) || "No reason provided!";
     const silent = interaction.options.get("silent")?.value || false;
@@ -29,15 +33,22 @@ export async function execute(interaction: CommandInteraction) {
                 .setTimestamp()
                 .setThumbnail(target.avatarURL({ size: 64 }))
             await target.send({ embeds: [targetKickDMEmbed] });
-        } catch (error) {
-            // TODO: Add logs message if DM fails
+        } catch (error: any) {
+            if (isLogsChannelSet) {
+                await logsChannel?.send({ content: `Failed to send kick DM to ${target.user.tag}. User has their DM's disabled.\nError Info - ${error.message}`});
+            }
             console.log(error);
         }
         try {
             await target.kick(reason);
             message = `Kicked ${target.user.tag} for ${reason}`;
-        } catch (error) {
-            // TODO: Add logs message if kick fails
+            if (isLogsChannelSet) {
+                await logsChannel?.send({content: `${message}`})
+            }
+        } catch (error: any) {
+            if (isLogsChannelSet) {
+                await logsChannel?.send({content: `Failed to kick ${target.user.tag}.\nError Info = ${error.message}`})
+            }
             message = `Failed to kick ${target.user.tag}. Please try again later`;
             console.log(error);
         }

@@ -1,5 +1,7 @@
 import { EmbedBuilder } from "@discordjs/builders";
-import { CommandInteraction, GuildMember, GuildMemberRoleManager, PermissionsBitField, SlashCommandBuilder } from "discord.js";
+import { CommandInteraction, GuildMember, GuildMemberRoleManager, PermissionsBitField, SlashCommandBuilder, TextChannel } from "discord.js";
+import allGuildsMap from "../../bot";
+
 
 export const data = new SlashCommandBuilder()
     .setName("mute")
@@ -30,6 +32,9 @@ export const data = new SlashCommandBuilder()
     .setDefaultMemberPermissions(PermissionsBitField.Flags.MuteMembers)
 
 export async function execute(interaction: CommandInteraction) {
+    const logsChannelId = allGuildsMap.guildLogsChannelMap.get(interaction.guildId!);
+    const isLogsChannelSet = logsChannelId !== undefined;
+    const logsChannel = isLogsChannelSet ? interaction.client.channels.cache.get(logsChannelId) as TextChannel : undefined;
     const target = (interaction.options.get("target")?.member as GuildMember);
     const duration = (interaction.options.get("duration")?.value as number);
     const reason = (interaction.options.get("reason")?.value as string);
@@ -48,15 +53,22 @@ export async function execute(interaction: CommandInteraction) {
                 .setTimestamp(new Date(Date.now() + duration * 60000))
                 .setFooter({ text: "Ends at" })
             await target.send({ embeds: [muteDMEmbed] })
-        } catch (error) {
-            // TODO: Add logs if DM Fails
+        } catch (error: any) {
+            if (isLogsChannelSet) {
+                await logsChannel?.send({ content: `Failed to send mute DM to ${target.user.tag}. User has their DM's disabled.\nError Info - ${error.message}`});
+            }
             console.log(error);
         }
         try {
             await target.timeout(duration, reason);
             message = `Successfully muted ${target.user.tag} for ${duration} minutes or ${duration / 60} hours.`
-        } catch (error) {
-            // TODO: Add logs if mute fails
+            if (isLogsChannelSet) {
+                await logsChannel?.send({content: `${message}`})
+            }
+        } catch (error: any) {
+            if (isLogsChannelSet) {
+                await logsChannel?.send({content: `Failed to mute ${target.user.tag}.\nError Info = ${error.message}`})
+            }
             message = `Failed to mute ${target.user.tag}. Please try again later`;
             console.log(error);
         }
