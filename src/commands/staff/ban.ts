@@ -14,31 +14,33 @@ export async function execute(interaction: CommandInteraction) {
     const target = (interaction.options.get("target")?.member as GuildMember)
     const reason = (interaction.options.get("reason")?.value as string)
     const silent = (interaction.options.get("silent")?.value as boolean)
-    var message: string;
+    var message: string | undefined;
     if (!target) message = "Please provide a valid user to ban."
-    if (target.id === interaction.user.id) message = "You cannot ban yourself."
-    if (target.roles.highest.position >= (interaction.member?.roles as GuildMemberRoleManager).highest.position) message = "You cannot ban this user as they are higher than or equal to you in the role hierarchy."
-    if (!target.bannable) message = "This user is not banable."
-    if (reason.length > 512) message = "Reason cannot be longer than 512 characters."
-    try {
-        const targetBanDMEmbed = new EmbedBuilder()
-            .setTitle("You have been banned from the server.")
-            .setDescription(`Reason: ${reason}`)
-            .setFooter({ text: `Banned by ${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL() })
-            .setTimestamp()
-            .setThumbnail(interaction.user.displayAvatarURL());
-        await target.send({ embeds: [targetBanDMEmbed] });
-    } catch (error) {
-        // TODO: Add logs if DM Fails
-        console.log(error);
-    }
-    try {
-        await target.ban({ reason: reason });
-        message = `Banned ${target.user.tag} for ${reason}`;
-    } catch (error) {
-        // TODO: Add logs if Ban Fails
-        message = `Failed to ban ${target.user.tag}. Please try again later`;
-        console.log(error);
+    else if (target.id === interaction.user.id) message = "You cannot ban yourself."
+    else if (target.roles.highest.position >= (interaction.member?.roles as GuildMemberRoleManager).highest.position) message = "You cannot ban this user as they are higher than or equal to you in the role hierarchy."
+    else if (!target.bannable) message = "This user is not banable."
+    else if (reason !== undefined) if (reason.length! > 512) message = "Reason cannot be longer than 512 characters."
+    else {
+        try {
+            const targetBanDMEmbed = new EmbedBuilder()
+                .setTitle("You have been banned from the server.")
+                .setDescription(`Reason: ${reason}`)
+                .setFooter({ text: `Banned by ${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL() })
+                .setTimestamp()
+                .setThumbnail(interaction.user.displayAvatarURL());
+            await target.send({ embeds: [targetBanDMEmbed] });
+        } catch (error) {
+            // TODO: Add logs if DM Fails
+            console.log(error);
+        }
+        try {
+            await target.ban({ reason: reason });
+            message = `Banned ${target.user.tag} for ${reason}`;
+        } catch (error) {
+            // TODO: Add logs if Ban Fails
+            message = `Failed to ban ${target.user.tag}. Please try again later`;
+            console.log(error);
+        }
     }
     if (silent) await interaction.reply({ content: message, ephemeral: true });
     else await interaction.reply({ content: message, ephemeral: false });

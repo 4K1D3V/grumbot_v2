@@ -13,32 +13,34 @@ export async function execute(interaction: CommandInteraction) {
     const target = interaction.options.get("user")?.member as GuildMember;
     const reason = (interaction.options.get("reason")?.value as string) || "No reason provided!";
     const silent = interaction.options.get("silent")?.value || false;
-    var message;
+    var message: string | undefined;
     if (!target) message = `Please provide a valid user to kick!`;
-    if (target.id === interaction.client.user.id) message = `I cannot kick myself DUHH!`;
-    if (target.id === interaction.user.id) message = `You cannot kick yourself!`;
-    if (target.roles.highest.position >= (interaction.member?.roles as GuildMemberRoleManager).highest.position) message = `You cannot kick this user as they are higher than or equal to you in the role hierarchy!`;
-    if (!target.kickable) message = `This user is not kickable!`;
-    if (reason.length > 512) message = `Reason cannot be longer than 512 characters!`;
-    try {
-        const targetKickDMEmbed = new EmbedBuilder()
-            .setTitle(`You have been kicked from the server - ${interaction.guild?.name}`)
-            .setDescription(`Reason: ${reason}`)
-            .setFooter({ text: `Kicked by ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() })
-            .setTimestamp()
-            .setThumbnail(target.avatarURL({ size: 64 }))
-        await target.send({ embeds: [targetKickDMEmbed] });
-    } catch (error) {
-        // TODO: Add logs message if DM fails
-        console.log(error);
-    }
-    try {
-        await target.kick(reason);
-        message = `Kicked ${target.user.tag} for ${reason}`;
-    } catch (error) {
-        // TODO: Add logs message if kick fails
-        message = `Failed to kick ${target.user.tag}. Please try again later`;
-        console.log(error);
+    else if (target.id === interaction.client.user.id) message = `I cannot kick myself DUHH!`;
+    else if (target.id === interaction.user.id) message = `You cannot kick yourself!`;
+    else if (target.roles.highest.position >= (interaction.member?.roles as GuildMemberRoleManager).highest.position) message = `You cannot kick this user as they are higher than or equal to you in the role hierarchy!`;
+    else if (!target.kickable) message = `This user is not kickable!`;
+    else if (reason !== undefined) if (reason.length! > 512) message = `Reason cannot be longer than 512 characters!`;
+    else {
+        try {
+            const targetKickDMEmbed = new EmbedBuilder()
+                .setTitle(`You have been kicked from the server - ${interaction.guild?.name}`)
+                .setDescription(`Reason: ${reason}`)
+                .setFooter({ text: `Kicked by ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() })
+                .setTimestamp()
+                .setThumbnail(target.avatarURL({ size: 64 }))
+            await target.send({ embeds: [targetKickDMEmbed] });
+        } catch (error) {
+            // TODO: Add logs message if DM fails
+            console.log(error);
+        }
+        try {
+            await target.kick(reason);
+            message = `Kicked ${target.user.tag} for ${reason}`;
+        } catch (error) {
+            // TODO: Add logs message if kick fails
+            message = `Failed to kick ${target.user.tag}. Please try again later`;
+            console.log(error);
+        }
     }
     if (silent) await interaction.reply({ content: message, ephemeral: true });
     else await interaction.reply({ content: message, ephemeral: false });
