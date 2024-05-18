@@ -3,8 +3,8 @@ import allGuildsMap, { updateGuildMaps } from "../../bot";
 import dbRepository from "../../repository/db.repository";
 
 export const data = new SlashCommandBuilder()
-    .setName("togglelogs")
-    .setDescription("Disable logs for the current server")
+    .setName("logs")
+    .setDescription("Toggle logs for the current server")
     .addSubcommand((query) => query.setName("disable").setDescription("Disable logs for the current server"))
     .addSubcommand((query) => query.setName("enable").setDescription("Enable logs for the current server"))
     .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator)
