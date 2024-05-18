@@ -98,6 +98,7 @@ var guildCommandPrefixMap: Map<string, string> = new Map();
 var guildStaffUserIdMap: Map<string,string[]> = new Map();
 var guildStaffRoleIdMap: Map<string, string> = new Map();
 var guildLogsChannelMap: Map<string, string> = new Map();
+var guildIsLogsEnabledMap: Map<string, number> = new Map();
 
 /**
  * Updates the guild maps in memory
@@ -116,6 +117,7 @@ export async function updateGuildMaps() {
                 guildStaffUserIdMap.set(guildid, guild.staff_user_id?.split(",")!);
                 guildStaffRoleIdMap.set(guildid, guild.staff_role_id!);
                 guildLogsChannelMap.set(guildid, guild.logs_channel_id!);
+                guildIsLogsEnabledMap.set(guildid, guild.is_logs_enabled!);
             }
         })
     })
@@ -123,6 +125,6 @@ export async function updateGuildMaps() {
 }
 
 export default {
-    guildCommandPrefixMap, guildStaffUserIdMap, guildStaffRoleIdMap, guildLogsChannelMap
+    guildCommandPrefixMap, guildStaffUserIdMap, guildStaffRoleIdMap, guildLogsChannelMap, guildIsLogsEnabledMap
 }
 
