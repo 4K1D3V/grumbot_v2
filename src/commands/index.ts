@@ -9,14 +9,11 @@ import * as banner from "./utility/banner";
 import * as font from "./fun/font";
 import * as prefix from "./admin/prefix";
 import * as staff from "./admin/staff";
-import * as viewprefix from "./admin/viewprefix"
 import * as viewstaff from "./utility/viewstaff"
 import * as staffrole from "./admin/staffrole"
 import * as kick from "./staff/kick"
 import * as ban from "./staff/ban"
 import * as mute from "./staff/mute"
-import * as viewlogschannel from "./admin/viewlogschannel"
-import * as setlogschannel from "./admin/setlogschannel"
 import * as logs from "./admin/logs"
 
 export const commands = {
@@ -31,14 +28,11 @@ export const commands = {
     font,
     prefix,
     staff,
-    viewprefix,
     viewstaff,
     staffrole,
     kick,
     ban,
     mute,
-    viewlogschannel,
-    setlogschannel,
     logs
 };
 
