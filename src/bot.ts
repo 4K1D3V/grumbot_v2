@@ -63,6 +63,10 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
     events.messageUpdate.execute(oldMessage as Message<boolean>, newMessage as Message<boolean>);
 })
 
+client.on("messageDelete", async (message) => {
+    events.messageDelete.execute(message as Message<boolean>);
+})
+
 // Login bot to discord
 client.login(config.DISCORD_TOKEN);
 
