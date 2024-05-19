@@ -7,7 +7,7 @@ import * as truthdare from "./fun/truthdare";
 import * as avatar from "./utility/avatar";
 import * as banner from "./utility/banner";
 import * as font from "./fun/font";
-import * as changeprefix from "./admin/prefix";
+import * as prefix from "./admin/prefix";
 import * as addstaff from "./admin/addstaff";
 import * as removestaff from "./admin/removestaff";
 import * as viewprefix from "./admin/viewprefix"
@@ -18,7 +18,7 @@ import * as ban from "./staff/ban"
 import * as mute from "./staff/mute"
 import * as viewlogschannel from "./admin/viewlogschannel"
 import * as setlogschannel from "./admin/setlogschannel"
-import * as togglelogs from "./admin/logs"
+import * as logs from "./admin/logs"
 
 export const commands = {
     ping, 
@@ -30,7 +30,7 @@ export const commands = {
     avatar,
     banner,
     font,
-    changeprefix,
+    prefix,
     addstaff,
     removestaff,
     viewprefix,
@@ -41,6 +41,6 @@ export const commands = {
     mute,
     viewlogschannel,
     setlogschannel,
-    togglelogs
+    logs
 };
 

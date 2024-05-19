@@ -21,18 +21,3 @@ export async function deployCommands() {
         console.error(error);
     }
 }
-
-export async function deleteCommands() {
-    console.log("Started deleting application (/) commands.");
-    try {
-        await rest.put(
-            Routes.applicationCommands(config.DISCORD_CLIENT_ID),
-            {
-                body: [],
-            }
-        );
-        console.log(`Successfully deleted all application (/) commands`);
-    } catch (error) {
-        console.error(error);
-    }
-}
