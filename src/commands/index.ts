@@ -8,8 +8,7 @@ import * as avatar from "./utility/avatar";
 import * as banner from "./utility/banner";
 import * as font from "./fun/font";
 import * as prefix from "./admin/prefix";
-import * as addstaff from "./admin/addstaff";
-import * as removestaff from "./admin/removestaff";
+import * as staff from "./admin/staff";
 import * as viewprefix from "./admin/viewprefix"
 import * as viewstaff from "./utility/viewstaff"
 import * as staffrole from "./admin/staffrole"
@@ -31,8 +30,7 @@ export const commands = {
     banner,
     font,
     prefix,
-    addstaff,
-    removestaff,
+    staff,
     viewprefix,
     viewstaff,
     staffrole,
