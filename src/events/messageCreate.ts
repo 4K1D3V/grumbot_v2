@@ -19,7 +19,7 @@ export async function execute(message: Message<boolean>) {
     }
 
     // Reply to !reload to deploy bot commands to discord
-    if (message.content.toLowerCase() === `${prefix}sudo-reload`) {
+    if (message.content.toLowerCase() === `${prefix}sudo reload`) {
         if (message.author.id === config.DEV_USER_ID) {
             const confirmButton = new ButtonBuilder().setCustomId("confirm-reload").setLabel("Confirm").setStyle(ButtonStyle.Secondary).setEmoji('✅');
             const denyButton = new ButtonBuilder().setCustomId("deny-reload").setLabel("Deny").setStyle(ButtonStyle.Primary).setEmoji('❌');
