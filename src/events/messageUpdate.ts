@@ -25,8 +25,9 @@ export async function execute(oldMessage: Message<boolean>, newMessage: Message<
         if (oldMessage.author.bot || newMessage.author.bot) return;
         else {
             messageEmbed.addFields(
-                { name: "Message Content", value: `Changed from ${oldMessage.content.substring(0, 450)} to ${newMessage.content.substring(0, 450)}`, inline: false },
-                { name: "Edited at", value: `${newMessage.editedAt}`, inline: false }
+                { name: "**Previous Message**", value: `${oldMessage.content.substring(0, 450)}`, inline: false },
+                { name: "**New Message**", value: `${newMessage.content.substring(0, 450)}`, inline: false },
+                { name: "**Edited at**", value: `${newMessage.editedAt}`, inline: false }
             )
             await logsChannel?.send({ content: "Message Edit Detected", embeds: [messageEmbed] });
         }
