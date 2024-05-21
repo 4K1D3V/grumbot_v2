@@ -29,6 +29,7 @@ export const data = new SlashCommandBuilder()
     .setDMPermission(false)
 
 export async function execute(interaction: ChatInputCommandInteraction) {
+    await interaction.deferReply();
     const subcommand = interaction.options.getSubcommand();
     const logsChannel = allGuildsMap.guildLogsChannelMap.get(interaction.guildId!)
     if (logsChannel === undefined || logsChannel === null) {
@@ -38,27 +39,27 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         if (subcommand === "disable") {
             if (allGuildsMap.guildIsLogsEnabledMap.get(interaction.guildId!) === 1) {
                 dbRepository.toggleLogs(interaction.guildId!, 0);
-                interaction.reply({ content: "Logs disabled" });
+                interaction.editReply({ content: "Logs disabled" });
             } else {
-                interaction.reply({ content: "Logs are already disabled" });
+                interaction.editReply({ content: "Logs are already disabled" });
             }
         } else if (subcommand === "enable") {
             if (allGuildsMap.guildIsLogsEnabledMap.get(interaction.guildId!) === 0) {
                 dbRepository.toggleLogs(interaction.guildId!, 1);
-                interaction.reply({ content: `Logs enabled. Logs channel is currently set as - <#${logsChannel}>` });
+                interaction.editReply({ content: `Logs enabled. Logs channel is currently set as - <#${logsChannel}>` });
             } else {
-                interaction.reply({ content: `Logs are already enabled. Logs channel is currently set as - <#${logsChannel}>` });
+                interaction.editReply({ content: `Logs are already enabled. Logs channel is currently set as - <#${logsChannel}>` });
             }
         } else if (subcommand === "view") {
-            interaction.reply({ content: `Logs channel is currently set as - <#${logsChannel}>` });
+            interaction.editReply({ content: `Logs channel is currently set as - <#${logsChannel}>` });
         } else if (subcommand === "set") {
             const channel = interaction.options.getChannel("channel") as TextChannel;
             if (!channel) await interaction.editReply({ content: "Please provide a valid channel." });
             if (!channel.permissionsFor(interaction.client.user!)?.has(PermissionsBitField.Flags.SendMessages))
-                await interaction.reply({ content: "I do not have the permissions to send messages to this channel." });
+                await interaction.editReply({ content: "I do not have the permissions to send messages to this channel." });
             else {
                 await dbRepository.updateGuildLogsChannel(channel.id, interaction.guildId!);
-                await interaction.reply({ content: `The channel for the server logs has been set to <#${channel.id}>.` });
+                await interaction.editReply({ content: `The channel for the server logs has been set to <#${channel.id}>.` });
             }
         }
         await updateGuildMaps();
