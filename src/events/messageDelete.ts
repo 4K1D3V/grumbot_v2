@@ -2,7 +2,6 @@ import { AuditLogEvent, EmbedBuilder, Message, TextChannel } from "discord.js";
 import allGuildsMap from "../bot";
 
 export async function execute(deletedMessage: Message) {
-    console.log(deletedMessage.embeds);
     const logsChannelId = allGuildsMap.guildLogsChannelMap.get(deletedMessage.guildId!);
     const isLogsChannelSet = logsChannelId !== undefined;
     const isLogsEnabled = allGuildsMap.guildIsLogsEnabledMap.get(deletedMessage.guildId!);
@@ -20,7 +19,6 @@ export async function execute(deletedMessage: Message) {
             .setAuthor({ name: `${deletedMessage.author.username}`, iconURL: deletedMessage.author.displayAvatarURL() });
         const auditLog = await deletedMessage.guild?.fetchAuditLogs({ limit: 1, type: AuditLogEvent.MessageDelete });
         const messageDeleteLog = auditLog?.entries.first();
-        console.log(deletedMessage.content.length);
         if (!messageDeleteLog) {
             deleteEmbed
                 .addFields(
