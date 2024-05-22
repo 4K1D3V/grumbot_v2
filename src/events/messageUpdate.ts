@@ -23,6 +23,7 @@ export async function execute(oldMessage: Message<boolean>, newMessage: Message<
             .setTimestamp()
             .setFooter({ text: "Grumbot", iconURL: `${config.BOT_IMAGE}` });
         if (oldMessage.author.bot || newMessage.author.bot) return;
+        else if (oldMessage.content === newMessage.content) return;
         else {
             messageEmbed.addFields(
                 { name: "**Previous Message**", value: `${oldMessage.content.substring(0, 450)}`, inline: false },
