@@ -33,7 +33,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     const subcommand = interaction.options.getSubcommand();
     const logsChannel = allGuildsMap.guildLogsChannelMap.get(interaction.guildId!)
     if (logsChannel === undefined || logsChannel === null) {
-        interaction.reply({ content: "Logs channel not set! Please set a logs channel with `/setlogschannel` first!" });
+        interaction.editReply({ content: "Logs channel not set! Please set a logs channel with `/setlogschannel` first!" });
         return;
     } else {
         if (subcommand === "disable") {
