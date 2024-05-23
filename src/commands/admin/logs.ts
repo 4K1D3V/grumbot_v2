@@ -63,7 +63,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         } else if (subcommand === "view") {
             interaction.editReply({ content: `Logs channel is currently set as - <#${logsChannel}>` });
         }
-        await updateGuildMaps();
     }
+    await updateGuildMaps();
 }
 
