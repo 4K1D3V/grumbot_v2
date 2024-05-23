@@ -27,10 +27,9 @@ export async function execute(interaction: CommandInteraction) {
         try {
             const targetBanDMEmbed = new EmbedBuilder()
                 .setTitle(`You have been banned from the server ${interaction?.guild?.name}`)
-                .setDescription(`Reason: ${reason === undefined ? "No Reason Provided" : reason}`)
+                .setDescription(`Reason: ${reason === undefined ? "No Reason Provided" : reason}\nStaff: ${interaction.user.tag}`)
                 .setFooter({ text: `Banned by ${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL() })
                 .setTimestamp()
-                .setThumbnail(interaction.user.displayAvatarURL());
             await target.send({ embeds: [targetBanDMEmbed] });
         } catch (error: any) {
             if (isLogsChannelSet) {
