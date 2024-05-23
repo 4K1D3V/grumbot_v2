@@ -26,7 +26,7 @@ export const data = new SlashCommandBuilder()
                 { name: "1 month", value: 43200 }
             )
     )
-    .addStringOption((reason) => reason.setName("reason").setDescription("The reason for the mute.").setRequired(false))
+    .addStringOption((reason) => reason.setName("reason").setDescription("The reason for the mute.").setRequired(false).setMaxLength(512))
     .addBooleanOption((silent) => silent.setName("silent").setDescription("Whether to send the mute message in channel.").setRequired(false))
     .setDMPermission(false)
     .setDefaultMemberPermissions(PermissionsBitField.Flags.MuteMembers)
@@ -40,16 +40,14 @@ export async function execute(interaction: CommandInteraction) {
     const reason = (interaction.options.get("reason")?.value as string);
     const silent = (interaction.options.get("silent")?.value as boolean);
     var message: string | undefined;
-    if (!target) message = "Please provide a valid user to mute."
-    else if (target.id === interaction.client.user.id) message = `I cannot mute myself DUHH!`;
+    if (target.id === interaction.client.user.id) message = `I cannot mute myself DUHH!`;
     else if (target.id === interaction.user.id) message = "You cannot mute yourself."
     else if (target.roles.highest.position >= (interaction.member?.roles as GuildMemberRoleManager).highest.position) message = "You cannot mute this user as they are higher than or equal to you in the role hierarchy."
-    else if (reason !== undefined) if (reason.length! > 512) message = "Reason cannot be longer than 512 characters."
     else {
         try {
             const muteDMEmbed = new EmbedBuilder()
                 .setTitle("You have been muted")
-                .setDescription(`Reason: ${reason}\nDuration: ${duration} minutes or ${duration / 60} hours\nStaff: ${interaction.user.tag}`)
+                .setDescription(`Reason: ${reason === undefined ? "No Reason Provided" : reason}\nDuration: ${duration} minutes or ${Math.round((duration / 60) * 100) / 100} hours\nStaff: ${interaction.user.tag}`)
                 .setTimestamp(new Date(Date.now() + duration * 60000))
                 .setFooter({ text: "Ends at" })
             await target.send({ embeds: [muteDMEmbed] })
@@ -60,8 +58,8 @@ export async function execute(interaction: CommandInteraction) {
             console.log(error);
         }
         try {
-            await target.timeout(duration, reason);
-            message = `Successfully muted ${target.user.tag} for ${duration} minutes or ${duration / 60} hours.`
+            await target.timeout(duration * 60000, reason);
+            message = `Successfully muted ${target.user.tag} for ${duration} minutes or ${Math.round((duration / 60) * 100) / 100} hours for reason - ${reason === undefined ? "No Reason Provided" : reason}`
             if (isLogsChannelSet) {
                 await logsChannel?.send({content: `${message}`})
             }
