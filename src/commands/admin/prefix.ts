@@ -42,10 +42,10 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         }
         dbRepository.updateGuildCommandPrefix(guild as CurrentGuild);
         await updateGuildMaps();
-        await interaction.editReply(`Updated Guild Command Prefix to - ${commandPrefix}`);
+        await interaction.editReply(`Updated Guild Command Prefix to - \`${commandPrefix}\``);
     } else if (subcommand === "view") {
         const commandPrefix = allGuildsMap.guildCommandPrefixMap.get(interaction.guildId!)
-        await interaction.editReply(`The command prefix for the guild is set as - \`${commandPrefix}\` \nTo change it, run the command \`/updateprefix\``);
+        await interaction.editReply(`The command prefix for the guild is set as - \`${commandPrefix}\` \nTo change it, run the command \`/prefix set\``);
     }
 }
 
