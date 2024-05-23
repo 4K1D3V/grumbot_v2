@@ -6,7 +6,7 @@ export const data = new SlashCommandBuilder()
     .setName("ban")
     .setDescription("Ban someone from the server.")
     .addUserOption((target) => target.setName("target").setDescription("The user to ban.").setRequired(true))
-    .addStringOption((reason) => reason.setName("reason").setDescription("The reason for the ban.").setRequired(false))
+    .addStringOption((reason) => reason.setName("reason").setDescription("The reason for the ban.").setRequired(false).setMaxLength(512))
     .addBooleanOption((silent) => silent.setName("silent").setDescription("Whether to send the kick message in channel.").setRequired(false))
     .setDMPermission(false)
     .setDefaultMemberPermissions(PermissionsBitField.Flags.BanMembers);
@@ -19,17 +19,15 @@ export async function execute(interaction: CommandInteraction) {
     const reason = (interaction.options.get("reason")?.value as string)
     const silent = (interaction.options.get("silent")?.value as boolean)
     var message: string | undefined;
-    if (!target) message = "Please provide a valid user to ban."
-    else if (target.id === interaction.client.user.id) message = "https://imgflip.com/i/8qvfkk";
-    else if (target.id === interaction.user.id) message = "https://imgflip.com/gif/8qvfzq"
-    else if (target.roles.highest.position >= (interaction.member?.roles as GuildMemberRoleManager).highest.position) message = "https://imgflip.com/i/8qvgbf"
-    else if (!target.bannable) message = "This user is not banable."
-    else if (reason !== undefined) if (reason.length! > 512) message = "Reason cannot be longer than 512 characters."
+    if (target.id === interaction.client.user.id) message = "https://imgflip.com/i/8qvfkk";
+    else if (target.id === interaction.user.id) message = "https://imgflip.com/gif/8qvfzq";
+    else if (target.roles.highest.position >= (interaction.member?.roles as GuildMemberRoleManager).highest.position) message = "https://imgflip.com/i/8qvgbf";
+    else if (!target.bannable) message = "This user is not banable.";
     else {
         try {
             const targetBanDMEmbed = new EmbedBuilder()
-                .setTitle("You have been banned from the server.")
-                .setDescription(`Reason: ${reason}`)
+                .setTitle(`You have been banned from the server ${interaction?.guild?.name}`)
+                .setDescription(`Reason: ${reason === undefined ? "No Reason Provided" : reason}`)
                 .setFooter({ text: `Banned by ${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL() })
                 .setTimestamp()
                 .setThumbnail(interaction.user.displayAvatarURL());
@@ -42,7 +40,7 @@ export async function execute(interaction: CommandInteraction) {
         }
         try {
             await target.ban({ reason: reason });
-            message = `Banned ${target.user.tag} for ${reason}`;
+            message = `Banned ${target.user.tag} for ${reason === undefined ? "No Reason Provided" : reason}`;
             if (isLogsChannelSet) {
                 await logsChannel?.send({content: `${message}`})
             }
@@ -53,8 +51,8 @@ export async function execute(interaction: CommandInteraction) {
             message = `Failed to ban ${target.user.tag}. Please try again later`;
             console.log(error);
         }
+        if (silent) await interaction.reply({ content: message, ephemeral: true });
+        else await interaction.reply({ content: message, ephemeral: false });
     }
-    if (silent) await interaction.reply({ content: message, ephemeral: true });
-    else await interaction.reply({ content: message, ephemeral: false });
 }
 
