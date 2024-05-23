@@ -13,6 +13,7 @@ import * as ban from "./staff/ban"
 import * as mute from "./staff/mute"
 import * as logs from "./admin/logs"
 import * as banlist from "./staff/banlist"
+import * as unban from "./staff/unban"
 
 export const commands = {
     ping, 
@@ -29,6 +30,7 @@ export const commands = {
     ban,
     mute,
     logs,
-    banlist
+    banlist,
+    unban
 };
 
