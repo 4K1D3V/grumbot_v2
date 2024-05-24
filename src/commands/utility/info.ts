@@ -20,7 +20,8 @@ export async function execute(interaction: CommandInteraction) {
         .setAuthor({ name: 'Grumbot', iconURL: botImage })
         .setDescription('My details under the hood!')
         .addFields(
-            { name: "My Uptime -", value: uptime, inline: false },
+            { name: "Server Uptime -", value: uptime, inline: false },
+            { name: "My Uptime -", value: interaction.client.uptime.toString(), inline: false },
             { name: "Operating System I am running on -", value: os.name, inline: false },
             { name: "My CPU Info I am running on -", value: cpuInfo.name },
             { name: "CPU Status -", value: `System - ${cpu.system}% / Idle - ${cpu.idle}%`, inline: false },
