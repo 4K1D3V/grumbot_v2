@@ -29,7 +29,7 @@ export async function execute(interaction: CommandInteraction) {
             { name: "Total Disk Space I have -", value: `Free - ${disk.available} of ${disk.total}`, inline: false },
             { name: "My Ping -", value: `${interaction.client.ws.ping} ms`, inline: false },
             { name: "I am coded on -", value: "NodeJS v20.12.x, DiscordJS v14.15.2 and Typescript v5.4.5", inline: false },
-            { name: "I am hosted on -", value: "Koyeb - https://www.koyeb.com/", inline: false }
+            { name: "I am hosted on -", value: "Amazon AWS EC2", inline: false }
         )
         .setTimestamp()
         .setFooter({ text: "Requested by " + interaction.user.username, iconURL: interaction.user.avatarURL()! })
