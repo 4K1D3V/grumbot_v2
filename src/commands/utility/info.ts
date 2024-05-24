@@ -15,13 +15,20 @@ export async function execute(interaction: CommandInteraction) {
     const cpu = servius.cpuTimes();
     const cpuCount = servius.cpuCount();
     const cpuInfo = servius.cpu();
+    let botUptime = (interaction.client.uptime / 1000);
+    let days = Math.floor(botUptime / 86400);
+    botUptime %= 86400;
+    let hours = Math.floor(botUptime / 3600);
+    botUptime %= 3600;
+    let minutes = Math.floor(botUptime / 60);
+    let seconds = Math.floor(botUptime % 60);
     const statusEmbed = new EmbedBuilder()
         .setTitle("My Current Server Status")
         .setAuthor({ name: 'Grumbot', iconURL: botImage })
         .setDescription('My details under the hood!')
         .addFields(
             { name: "Server Uptime -", value: uptime, inline: false },
-            { name: "My Uptime -", value: interaction.client.uptime.toString(), inline: false },
+            { name: "My Uptime -", value: `${days} days, ${hours} hours, ${minutes} minutes and ${seconds} seconds`, inline: false },
             { name: "Operating System I am running on -", value: os.name, inline: false },
             { name: "My CPU Info I am running on -", value: cpuInfo.name },
             { name: "CPU Status -", value: `System - ${cpu.system}% / Idle - ${cpu.idle}%`, inline: false },
