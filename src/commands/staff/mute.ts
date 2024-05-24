@@ -40,6 +40,11 @@ export async function execute(interaction: CommandInteraction) {
     const reason = (interaction.options.get("reason")?.value as string);
     const silent = (interaction.options.get("silent")?.value as boolean);
     var message: string | undefined;
+    const isTargetMuted = await isUserMuted(interaction, target);
+    if (isTargetMuted) {
+        await interaction.reply({ content: `${target.user.tag} is already muted.`});
+        return;
+    }
     if (target.id === interaction.client.user.id) message = `I cannot mute myself DUHH!`;
     else if (target.id === interaction.user.id) message = "You cannot mute yourself."
     else if (target.roles.highest.position >= (interaction.member?.roles as GuildMemberRoleManager).highest.position) message = "You cannot mute this user as they are higher than or equal to you in the role hierarchy."
@@ -75,3 +80,13 @@ export async function execute(interaction: CommandInteraction) {
     else await interaction.reply({ content: (message as string), ephemeral: false });
 }
 
+async function isUserMuted (interaction: CommandInteraction, target: GuildMember): Promise<boolean> {
+    const mutedUsers: Map<GuildMember, Date> = new Map();
+    await interaction.guild?.members.fetch()
+        .then(members => {
+            members.forEach(user => {
+                if (user.isCommunicationDisabled()) mutedUsers.set(user, user.communicationDisabledUntil);
+            })
+        });
+    return mutedUsers.has(target);
+}
