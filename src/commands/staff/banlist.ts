@@ -8,18 +8,18 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction: ChatInputCommandInteraction) {
     const banlist = await interaction.guild?.bans.fetch();
-    const embed = new EmbedBuilder()
+    const banEmbed = new EmbedBuilder()
         .setTitle("Banned Users")
         .setDescription("Banned users in the server -")
         .setFooter({ text: `${banlist?.size} banned users on ${interaction.guild?.name}` })
         .setTimestamp(new Date());
     if (banlist?.size === 0) {
-        embed.addFields({ name: "No banned users", value: "There are no banned users on this server." });
+        banEmbed.addFields({ name: "No banned users", value: "There are no banned users on this server." });
     } else {
         banlist?.forEach((user) => {
-            embed.addFields({ name: `${user.user.tag}`, value: `${user.reason ? user.reason : "No reason provided."}` });
+            banEmbed.addFields({ name: `${user.user.tag}`, value: `${user.reason ? user.reason : "No reason provided."}` });
         });
     }
-    await interaction.reply({ embeds: [embed] });
+    await interaction.reply({ embeds: [banEmbed] });
 }
 
