@@ -6,7 +6,7 @@ import dbRepository from './repository/db.repository';
 import CurrentGuild from './model/currentGuild.model';
 
 const client = new Client({
-    intents: ["Guilds", "GuildMessages", "DirectMessages", "MessageContent"],
+    intents: ["Guilds", "GuildMessages", "DirectMessages", "MessageContent", "GuildMembers", "GuildBans", "GuildModeration"],
 });
 
 /**
