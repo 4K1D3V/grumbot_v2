@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { AttachmentBuilder, ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
 export const data = new SlashCommandBuilder()
@@ -8,6 +8,16 @@ export const data = new SlashCommandBuilder()
         subcommand.setName("ping")
         .setDescription("Check the status of the minecraft server")
         .addStringOption((ip) => ip.setName("ip").setDescription("The ip of the minecraft server").setRequired(true))
+    )
+    .addSubcommand(subcommand => subcommand.setName("avatar")
+        .setDescription("Show an isometric avatar of a minecraft player's skin")
+        .addStringOption((username) => username.setName("username")
+            .setDescription("The username of the minecraft profile").setRequired(true)
+        )
+        .addStringOption(type => type.setName("type").setDescription("The type of the skin").setRequired(true).setChoices(
+            { name: "Head", value: "head" },
+            { name: "Body", value: "body" },
+        ))
     )
 
 export async function execute(interaction: ChatInputCommandInteraction) {
@@ -42,6 +52,17 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         } else {
             interaction.editReply(`An error occurred`);
         }
-    }
+    } else if (subcommand === "skin") {
+        const username = interaction.options.getString("username");
+        const type = interaction.options.getString("type");
+        const avatarEmbed = new EmbedBuilder()
+            .setTitle("Minecraft Avatar")
+            .setDescription(`Avatar of ${username}`)
+            .setImage(`https://mc-heads.net/${type}/${username}`)
+            .setColor(0x77dd77)
+            .setTimestamp(new Date())
+            .setFooter({ text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL() });
+        await interaction.editReply({ embeds: [avatarEmbed] });
+    } 
 }
 
