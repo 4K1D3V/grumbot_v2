@@ -12,15 +12,14 @@ const connectionConfig = {
 export var connection = mysql2.createConnection(connectionConfig);
 
 function handleDisconnet() {
-    connection = mysql2.createConnection(connectionConfig)
+    connection = mysql2.createConnection(connectionConfig);
+    console.log("DB Reconnected!")
 }
 
 connection.on("error", (err) => {
     console.log("DB Connection Closed. Attempting Reconnect!");
     if (err.code === 'PROTOCOL_CONNECTION_LOST') {
         handleDisconnet();
-    } else {
-        console.log("DB Connection Error!");
     }
 })
 
