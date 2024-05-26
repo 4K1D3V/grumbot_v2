@@ -4,18 +4,19 @@ import * as translate from "./fun/translate";
 import * as info from "./utility/info";
 import * as lyrics from "./fun/lyrics";
 import * as truthdare from "./fun/truthdare";
-import * as avatar from "./utility/avatar";
-import * as banner from "./utility/banner";
+import * as avatar from "./fun/avatar";
+import * as banner from "./fun/banner";
 import * as font from "./fun/font";
 import * as prefix from "./admin/prefix";
-import * as kick from "./staff/kick"
-import * as ban from "./staff/ban"
-import * as mute from "./staff/mute"
-import * as logs from "./admin/logs"
-import * as banlist from "./staff/banlist"
-import * as unban from "./staff/unban"
-import * as mutelist from "./staff/mutelist"
-import * as minecraft from "./fun/minecraft"
+import * as kick from "./staff/kick";
+import * as ban from "./staff/ban";
+import * as mute from "./staff/mute";
+import * as logs from "./admin/logs";
+import * as banlist from "./staff/banlist";
+import * as unban from "./staff/unban";
+import * as mutelist from "./staff/mutelist";
+import * as minecraft from "./fun/minecraft";
+import * as help from "./utility/help";
 
 export const commands = {
     ping, 
@@ -35,6 +36,7 @@ export const commands = {
     banlist,
     unban,
     mutelist,
-    minecraft
+    minecraft,
+    help,
 };
 
