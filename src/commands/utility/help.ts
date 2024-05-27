@@ -169,7 +169,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
             .setDescription("This command sends the lyrics of the mentioned song")
             .addFields(
                 { name: "Command Usage - ", value: "`/minecraft <avatar/ping/profile>`" },
-                { name: "Subcommand Usage - ", value: "`1. /minecraft avatar <username> <type>` - Sends the current minecraft avatar of the mentioned username. Type can be either \"Head\" or \"Body\"\n2. /minecraft ping <ip> - Sends the details of the mentioned minecraft server ip address\n3. /minecraft profile <username> - Sends the minecraft profile profile details of the mentioned username\n" },
+                { name: "Subcommand Usage - ", value: "`1. /minecraft avatar <username> <type>` - Sends the current minecraft avatar of the mentioned username. Type can be either \"Head\" or \"Body\"\n2. `/minecraft ping <ip>` - Sends the details of the mentioned minecraft server ip address\n3. `/minecraft profile <username>` - Sends the minecraft profile profile details of the mentioned username\n" },
                 { name: "Category - ", value: "Fun" },
                 { name: "Note - ", value: "<> means required argument, [] means optional" }
             )
