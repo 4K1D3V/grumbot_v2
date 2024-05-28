@@ -28,6 +28,7 @@ export const data = new SlashCommandBuilder()
         )
         .setRequired(false)
     )
+    .setDMPermission(false);
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
     const member = interaction.member as GuildMember
