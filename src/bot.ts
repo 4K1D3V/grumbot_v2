@@ -101,6 +101,8 @@ function getTotalUsers() {
 var guildCommandPrefixMap: Map<string, string> = new Map();
 var guildLogsChannelMap: Map<string, string> = new Map();
 var guildIsLogsEnabledMap: Map<string, number> = new Map();
+var guildIsTicketsEnabledMap: Map<string, number> = new Map();
+var guildTicketsDataMap: Map<string, string> = new Map();
 
 /**
  * Updates the guild maps in memory
@@ -118,6 +120,8 @@ export async function updateGuildMaps() {
                 guildCommandPrefixMap.set(guildid, guild.command_prefix!);
                 guildLogsChannelMap.set(guildid, guild.logs_channel_id!);
                 guildIsLogsEnabledMap.set(guildid, guild.is_logs_enabled!);
+                guildIsTicketsEnabledMap.set(guildid, guild.is_tickets_enabled!);
+                guildTicketsDataMap.set(guildid, guild.tickets_data!);
             }
         })
     })
@@ -125,6 +129,6 @@ export async function updateGuildMaps() {
 }
 
 export default {
-    guildCommandPrefixMap, guildLogsChannelMap, guildIsLogsEnabledMap
+    guildCommandPrefixMap, guildLogsChannelMap, guildIsLogsEnabledMap,guildIsTicketsEnabledMap,guildTicketsDataMap
 }
 
