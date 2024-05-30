@@ -1,9 +1,10 @@
-import { ActivitiesOptions, ActivityType, Client, Guild, Message, TextChannel } from 'discord.js';
+import { ActivitiesOptions, ActivityType, Client, Guild, Message } from 'discord.js';
 import { config } from './config';
 import express from 'express';
 import events from "./events/index"
 import dbRepository from './repository/db.repository';
 import CurrentGuild from './model/currentGuild.model';
+import { handleModal } from './commands/ticket/ticket';
 
 const client = new Client({
     intents: ["Guilds", "GuildMessages", "DirectMessages", "MessageContent", "GuildMembers", "GuildBans", "GuildModeration"],
@@ -46,7 +47,8 @@ client.on("guildCreate", async (guild: Guild) => {
  * Event fired each time the bot is added to a guild
  */
 client.on("interactionCreate", async (interaction) => {
-    events.interactionCreate.execute(interaction);
+    if (!interaction.isModalSubmit()) events.interactionCreate.execute(interaction);
+    else await handleModal(interaction);
 });
 
 /**

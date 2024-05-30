@@ -1,5 +1,8 @@
 import { ChannelSelectMenuBuilder } from "@discordjs/builders";
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelSelectMenuInteraction, ChannelType, ChatInputCommandInteraction, ModalBuilder, ModalSubmitInteraction, RoleSelectMenuBuilder, RoleSelectMenuInteraction, SlashCommandBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CategoryChannel, ChannelSelectMenuInteraction, ChannelType, ChatInputCommandInteraction, Emoji, ModalBuilder, ModalSubmitInteraction, RoleSelectMenuBuilder, RoleSelectMenuInteraction, SlashCommandBuilder, TextChannel, TextInputBuilder, TextInputStyle } from "discord.js";
+import dbRepository from "../../repository/db.repository";
+import allGuildsMap, { updateGuildMaps } from "../../bot";
+import TicketData from "../../model/ticketData.model";
 
 export const data = new SlashCommandBuilder()
     .setName("ticket")
@@ -90,7 +93,6 @@ export async function execute(interaction: ChatInputCommandInteraction) {
             const roles = await rolesResponse.awaitMessageComponent({ filter: i => i.user.id === interaction.user.id, time: 60_000 }) as RoleSelectMenuInteraction;
             if (roles.customId === "ticketRoles") {
                 ticketRoles = roles.values.toString();
-                console.log(ticketRoles);
                 await interaction.editReply({ content: "Success. Proceeding ...", components: [] });
             }
         } catch (err: any) {
@@ -100,9 +102,18 @@ export async function execute(interaction: ChatInputCommandInteraction) {
             });
             return;
         }
-        await interaction.editReply({ content: `Ticket Channel set to - ${ticketChannel} and Ticket Category set to - ${ticketCategory} successfully!`, components: [] });
+
+        // #4 - SEND DATA TO DATABASE
+        const guildTicketData: TicketData = {
+            ticketChannel: ticketChannel!,
+            ticketCategory: ticketCategory!,
+            ticketRoles: ticketRoles!
+        }
+        dbRepository.updateGuildTicketsData(JSON.stringify(guildTicketData), interaction.guildId!);
+        await interaction.editReply({ content: `Ticket Channel set to - <#${ticketChannel}> and Ticket Category set to - **${(interaction.client.channels.cache.get(ticketCategory!) as CategoryChannel).name}** successfully!`, components: [] });
+        updateGuildMaps();
     } else if (subcommand === "set") {
-        // #4 - MESSAGE TO BE SEND IN THE TICKETS CHANNEL
+        // #5 - MESSAGE TO BE SEND IN THE TICKETS CHANNEL
         const messageModal = new ModalBuilder()
             .setCustomId("messageModal")
             .setTitle("Enter the ticket channel details")
@@ -120,31 +131,27 @@ export async function execute(interaction: ChatInputCommandInteraction) {
             .setRequired(true)
             .setMaxLength(25)
             .setPlaceholder("Create Ticket")
-        const ticketButtonEmoji = new TextInputBuilder()
-            .setCustomId("ticketButtonEmoji")
-            .setLabel("Enter the emoji for the button")
-            .setRequired(true)
-            .setPlaceholder(":envelope_with_arrow:")
-            .setStyle(TextInputStyle.Short)
         const messageInputRow = new ActionRowBuilder<TextInputBuilder>().addComponents(messageInput);
         const buttonTextRow = new ActionRowBuilder<TextInputBuilder>().addComponents(ticketButtonText);
-        const emojiRow = new ActionRowBuilder<TextInputBuilder>().addComponents(ticketButtonEmoji);
-        messageModal.addComponents(messageInputRow, buttonTextRow, emojiRow);
+        messageModal.addComponents(messageInputRow, buttonTextRow);
         await interaction.showModal(messageModal);
+    }
+}
 
-        interaction.client.on("modalSubmit", async (modalInteration: ModalSubmitInteraction) => {
-            if (modalInteration.customId === "messageModal") {
-                const message = modalInteration.fields.getTextInputValue("ticketMessage");
-                const buttonText = modalInteration.fields.getTextInputValue("ticketButtonText");
-                const emoji = modalInteration.fields.getTextInputValue("ticketButtonEmoji");
-                const ticketButton = new ButtonBuilder()
-                    .setCustomId("ticketButton")
-                    .setLabel(buttonText)
-                    .setStyle(ButtonStyle.Success)
-                    .setEmoji(emoji)
-                const buttonRow = new ActionRowBuilder<ButtonBuilder>().addComponents(ticketButton)
-                await interaction.editReply({ content: message, components: [buttonRow] })
-            }
-        })
+export async function handleModal(interaction: ModalSubmitInteraction) {
+    if (interaction.customId === "messageModal") {
+        const ticketData: TicketData = JSON.parse(allGuildsMap.guildTicketsDataMap.get(interaction.guildId!)!);
+        const ticketChannel = ticketData.ticketChannel;
+        const message = interaction.fields.getTextInputValue("ticketMessage");
+        const buttonText = interaction.fields.getTextInputValue("ticketButtonText");
+        const ticketButton = new ButtonBuilder()
+            .setCustomId("ticketButton")
+            .setLabel(buttonText)
+            .setStyle(ButtonStyle.Success);
+        const buttonRow = new ActionRowBuilder<ButtonBuilder>().addComponents(ticketButton)
+        await (interaction.client.channels.cache.get(ticketChannel) as TextChannel).send({
+            content: message,
+            components: [buttonRow]
+        });
     }
 }
