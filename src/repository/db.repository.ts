@@ -10,6 +10,7 @@ interface IGuildRepository {
     updateGuildStaff(guild: CurrentGuild): Promise<CurrentGuild>;
     updateGuildStaffRole(guildStaffRoleId: string, guildId: string): Promise<string>;
     updateGuildLogsChannel(guildLogsChannelId: string, guildId: string): Promise<string>;
+    updateGuildTicketsData(guildTicketData: string, guildId: string): Promise<CurrentGuild>;
     toggleLogs(guildId: string, value: number): Promise<string>;
 }
 
@@ -146,6 +147,19 @@ class GuildRepository implements IGuildRepository {
                 }
             )
         })
+    }
+
+    updateGuildTicketsData(guildTicketData: string, guildId: string): Promise<CurrentGuild> {
+        return new Promise((resolve, reject) => {
+            connection.query<ResultSetHeader>(
+                `UPDATE guilds SET is_tickets_enabled = '1', tickets_data = ? WHERE guild_id = ?`,
+                [guildTicketData, guildId],
+                (error, result) => {
+                    if (error) reject(error);
+                    else resolve(result as unknown as CurrentGuild);
+                }
+            )
+        })   
     }
 
 }
