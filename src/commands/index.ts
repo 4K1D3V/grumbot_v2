@@ -17,6 +17,7 @@ import * as unban from "./staff/unban";
 import * as mutelist from "./staff/mutelist";
 import * as minecraft from "./fun/minecraft";
 import * as help from "./utility/help";
+import * as ticket from "./ticket/ticket"
 
 export const commands = {
     ping, 
@@ -38,5 +39,6 @@ export const commands = {
     mutelist,
     minecraft,
     help,
+    ticket
 };
 
