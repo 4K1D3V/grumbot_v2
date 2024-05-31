@@ -46,7 +46,8 @@ client.on("guildCreate", async (guild: Guild) => {
  * Event fired each time an interaction is created
  */
 client.on("interactionCreate", async (interaction) => {
-    events.interactionCreate.execute(interaction);
+    if (interaction.isCommand()) events.interactionCreate.execute(interaction);
+    else if (interaction.isButton()) events.buttonAction.execute(interaction);
 });
 
 /**
