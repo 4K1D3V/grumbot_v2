@@ -4,7 +4,6 @@ import express from 'express';
 import events from "./events/index"
 import dbRepository from './repository/db.repository';
 import CurrentGuild from './model/currentGuild.model';
-import { handleModal } from './commands/ticket/ticket';
 
 const client = new Client({
     intents: ["Guilds", "GuildMessages", "DirectMessages", "MessageContent", "GuildMembers", "GuildBans", "GuildModeration"],
@@ -44,11 +43,10 @@ client.on("guildCreate", async (guild: Guild) => {
 });
 
 /**
- * Event fired each time the bot is added to a guild
+ * Event fired each time an interaction is created
  */
 client.on("interactionCreate", async (interaction) => {
-    if (!interaction.isModalSubmit()) events.interactionCreate.execute(interaction);
-    else await handleModal(interaction);
+    events.interactionCreate.execute(interaction);
 });
 
 /**

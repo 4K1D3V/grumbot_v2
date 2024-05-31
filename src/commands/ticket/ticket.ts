@@ -1,5 +1,5 @@
 import { ChannelSelectMenuBuilder } from "@discordjs/builders";
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CategoryChannel, ChannelSelectMenuInteraction, ChannelType, ChatInputCommandInteraction, Emoji, ModalBuilder, ModalSubmitInteraction, RoleSelectMenuBuilder, RoleSelectMenuInteraction, SlashCommandBuilder, TextChannel, TextInputBuilder, TextInputStyle } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CategoryChannel, ChannelSelectMenuInteraction, ChannelType, ChatInputCommandInteraction, ComponentType, ModalBuilder, ModalSubmitInteraction, RoleSelectMenuBuilder, RoleSelectMenuInteraction, SlashCommandBuilder, TextChannel, TextInputBuilder, TextInputStyle } from "discord.js";
 import dbRepository from "../../repository/db.repository";
 import allGuildsMap, { updateGuildMaps } from "../../bot";
 import TicketData from "../../model/ticketData.model";
@@ -43,10 +43,14 @@ export async function execute(interaction: ChatInputCommandInteraction) {
             components: [channelSelectRow]
         });
         try {
-            const channel = await channelResponse.awaitMessageComponent({ filter: i => i.user.id === interaction.user.id, time: 60_000 }) as ChannelSelectMenuInteraction;
+            const channel = await channelResponse.awaitMessageComponent({
+                filter: i => i.user.id === interaction.user.id,
+                time: 60_000,
+                componentType: ComponentType.ChannelSelect
+            }) as ChannelSelectMenuInteraction;
             if (channel.customId === "ticketChannel") {
                 ticketChannel = channel.values[0];
-                await interaction.editReply({ content: "Success. Proceeding ...", components: [] });
+                await channel.update({ content: "Success. Proceeding ...", components: [] });
             }
         } catch (err: any) {
             await interaction.editReply({ content: "Channel choice not recieved in 60 seconds. Please re-run the command!", components: [] });
@@ -64,10 +68,14 @@ export async function execute(interaction: ChatInputCommandInteraction) {
             components: [categorySelectRow]
         });
         try {
-            const category = await categoryResponse.awaitMessageComponent({ filter: i => i.user.id === interaction.user.id, time: 60_000 }) as ChannelSelectMenuInteraction;
+            const category = await categoryResponse.awaitMessageComponent({
+                filter: i => i.user.id === interaction.user.id,
+                time: 60_000,
+                componentType: ComponentType.ChannelSelect
+            }) as ChannelSelectMenuInteraction;
             if (category.customId === "ticketCategory") {
                 ticketCategory = category.values[0];
-                await interaction.editReply({ content: "Success. Proceeding ...", components: [] });
+                await category.update({ content: "Success. Proceeding ...", components: [] });
             }
         } catch (err: any) {
             await interaction.editReply({
@@ -90,10 +98,14 @@ export async function execute(interaction: ChatInputCommandInteraction) {
             components: [rolesSelectRow]
         });
         try {
-            const roles = await rolesResponse.awaitMessageComponent({ filter: i => i.user.id === interaction.user.id, time: 60_000 }) as RoleSelectMenuInteraction;
+            const roles = await rolesResponse.awaitMessageComponent({
+                filter: i => i.user.id === interaction.user.id,
+                time: 60_000,
+                componentType: ComponentType.RoleSelect
+            }) as RoleSelectMenuInteraction;
             if (roles.customId === "ticketRoles") {
                 ticketRoles = roles.values.toString();
-                await interaction.editReply({ content: "Success. Proceeding ...", components: [] });
+                await roles.update({ content: "Success. Proceeding ...", components: [] });
             }
         } catch (err: any) {
             await interaction.editReply({
@@ -135,23 +147,34 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         const buttonTextRow = new ActionRowBuilder<TextInputBuilder>().addComponents(ticketButtonText);
         messageModal.addComponents(messageInputRow, buttonTextRow);
         await interaction.showModal(messageModal);
-    }
-}
-
-export async function handleModal(interaction: ModalSubmitInteraction) {
-    if (interaction.customId === "messageModal") {
-        const ticketData: TicketData = JSON.parse(allGuildsMap.guildTicketsDataMap.get(interaction.guildId!)!);
-        const ticketChannel = ticketData.ticketChannel;
-        const message = interaction.fields.getTextInputValue("ticketMessage");
-        const buttonText = interaction.fields.getTextInputValue("ticketButtonText");
-        const ticketButton = new ButtonBuilder()
-            .setCustomId("ticketButton")
-            .setLabel(buttonText)
-            .setStyle(ButtonStyle.Success);
-        const buttonRow = new ActionRowBuilder<ButtonBuilder>().addComponents(ticketButton)
-        await (interaction.client.channels.cache.get(ticketChannel) as TextChannel).send({
-            content: message,
-            components: [buttonRow]
-        });
+        try {
+            const modalResponse = await interaction.awaitModalSubmit({
+                filter: i => i.user.id === interaction.user.id && i.customId === "messageModal",
+                time: 60_000,
+            }) as ModalSubmitInteraction;
+            const message = modalResponse.fields.getTextInputValue("ticketMessage");
+            const buttonText = modalResponse.fields.getTextInputValue("ticketButtonText");
+            const ticketData: TicketData = JSON.parse(allGuildsMap.guildTicketsDataMap.get(interaction.guildId!)!);
+            const ticketChannel = ticketData.ticketChannel;
+            const ticketButton = new ButtonBuilder()
+                .setCustomId("ticketButton")
+                .setLabel(buttonText)
+                .setStyle(ButtonStyle.Success);
+            const buttonRow = new ActionRowBuilder<ButtonBuilder>().addComponents(ticketButton)
+            await (interaction.client.channels.cache.get(ticketChannel) as TextChannel).send({
+                content: message,
+                components: [buttonRow]
+            });
+            await modalResponse.reply({
+                content: `Ticket message send to the tickets channel <#${ticketChannel}>!`,
+                components: []
+            })
+        } catch (err) {
+            await interaction.editReply({
+                content: "Form reponse not recieved in 60 seconds. Please re-run the command!",
+                components: []
+            });
+            return;
+        }
     }
 }
