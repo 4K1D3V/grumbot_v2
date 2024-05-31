@@ -64,4 +64,8 @@ To deploy commands to the server, REPLACE the owner user id in `src -> config.ts
 
 **Note -** Deploy commands is only required to be ran once, each time there is any changes in the slash commands.
 
+## Creator
+
+[Sartak](https://github.com/)
+
 The bot is now up and running! Test it out by joining it to your server and using the commands.
