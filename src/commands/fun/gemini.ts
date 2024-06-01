@@ -1,4 +1,4 @@
-import { GenerativeModel, GoogleGenerativeAI, GoogleGenerativeAIResponseError } from "@google/generative-ai";
+import { GenerativeModel, GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
 import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 import { config } from "../../config";
 
@@ -24,7 +24,16 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     if (subcommand === "ask") {
         try {
             const genAI = new GoogleGenerativeAI(config.GEMINI_API!);
-            const model: GenerativeModel = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+            const model: GenerativeModel = genAI.getGenerativeModel({
+                model: "gemini-1.5-pro",
+                safetySettings: [
+                    { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
+                    { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+                    { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
+                    { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+                    { category: HarmCategory.HARM_CATEGORY_UNSPECIFIED, threshold: HarmBlockThreshold.BLOCK_NONE }
+                ]
+            });
             const result = await model.generateContent(prompt!);
             const response = result.response
             const text = response.text()
