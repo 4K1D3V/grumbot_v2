@@ -1,4 +1,4 @@
-import { GenerativeModel, GoogleGenerativeAI } from "@google/generative-ai";
+import { GenerativeModel, GoogleGenerativeAI, GoogleGenerativeAIResponseError } from "@google/generative-ai";
 import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 import { config } from "../../config";
 
@@ -34,9 +34,8 @@ export async function execute(interaction: ChatInputCommandInteraction) {
             }
             await interaction.editReply(`${splitText[0]}`);
             for (var i = 1; i < splitText.length; i++) await interaction.channel?.send(`${splitText[i]}`);
-        } catch (err) {
-            interaction.editReply({ content: `Something went wrong in getting the response from AI!` });
-            console.log(err);
+        } catch (err: any) {
+            interaction.editReply({ content: `Something went wrong in getting the response from AI! Error - ${err.message}` });
         }
     }
 }
