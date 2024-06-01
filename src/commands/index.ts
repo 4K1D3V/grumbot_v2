@@ -18,6 +18,7 @@ import * as mutelist from "./staff/mutelist";
 import * as minecraft from "./fun/minecraft";
 import * as help from "./utility/help";
 import * as ticket from "./ticket/ticket"
+import * as gemini from "./fun/gemini"
 
 export const commands = {
     ping, 
@@ -39,6 +40,7 @@ export const commands = {
     mutelist,
     minecraft,
     help,
-    ticket
+    ticket,
+    gemini
 };
 
