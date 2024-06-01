@@ -13,7 +13,8 @@ const {
   MYSQL_USER,
   MYSQL_PASSWORD,
   MYSQL_DATABASE,
-  MYSQL_PORT
+  MYSQL_PORT,
+  GEMINI_API
 } = process.env;
 
 const DEV_USER_ID: String = "1216042650096898189"
@@ -36,5 +37,6 @@ export const config = {
   MYSQL_PASSWORD,
   MYSQL_DATABASE,
   MYSQL_PORT,
-  BOT_IMAGE
+  BOT_IMAGE,
+  GEMINI_API
 };
