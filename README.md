@@ -22,7 +22,8 @@
   - random-jokes-api: ^1.5.9
   - servius: ^1.1.4
   - convert-font: ^1.0.4
-  - mysql2: ^3.9.7
+  - mysql2: ^3.9.8
+  - google/generative-ai: ^0.12.0
 - **Dev Dependencies** ->
   - tsup: ^8.0.2
   - tsx: ^4.9.3
@@ -34,18 +35,17 @@ Simply run the command `npm install` or `npm i` to install all necessary depende
 
 After successfully installing the bot's dependencies, create a file named `.env` in the root directory and enter the required details as follows - 
 
-- DISCORD_TOKEN=
 - DISCORD_CLIENT_ID=
-- GUILD_ID=
+- DISCORD_TOKEN=
+- MUSIXMATCH_API_KEY=
+- MYSQL_DATABASE=
+- MYSQL_HOST=
+- MYSQL_PASSWORD=
+- MYSQL_PORT=
+- MYSQL_USER=
 - PORT=
 - X_RapidAPI_Key=
-- MUSIXMATCH_API_KEY=
-- GUILD_ID=
-- MYSQL_HOST=
-- MYSQL_DATABASE
-- MYSQL_PORT
-- MYSQL_USER
-- MYSQL_PASSWORD
+- GEMINI_API=
 
 For instance, your bot's Token should be assigned to the **DISCORD_TOKEN** variable using `environment variables` or by adding it to the `.env` file. Additionally, make sure to input the Owner user IDs, server name, and other relevant details accurately for the bot to function effectively. Review and input all necessary information before running the bot.
 
@@ -53,12 +53,14 @@ For instance, your bot's Token should be assigned to the **DISCORD_TOKEN** varia
 - To get a free MySQL for development purposes, head to [Aiven](https://aiven.io/) and create a free account and, Create a SQL Instance for free. 
 - Get RapidAPI from [Rapid API Hub](https://rapidapi.com/hub) to use various API's. You will need to subscribe the API's manually via RapidAPI Hub.
 - Get MusicxMatch API Key from [MusicxMatch](https://developer.musixmatch.com/) to get the songs details
+- Get Google Generative AI API Key from [Build With Gemini API](https://ai.google.dev/)
 
 ## Running the Bot 🚀
 
 You are now ready to run the bot. Simply enter the commands below:
 
-`npm run dev`
+To run in development environment - `npm run dev`
+To run in production - `npm run build` and then, `npm run start`
 
 To deploy commands to the server, REPLACE the owner user id in `src -> config.ts`. Add the bot in a server and run it with the above command. The, type `!reload` to start registering the Slash Commands to Discord.
 
