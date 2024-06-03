@@ -8,14 +8,28 @@ export async function execute(interaction: ButtonInteraction) {
         try {
             const createdTicketChannel = await interaction.guild?.channels.create({
                 name: `ticket-${interaction.user.username}`,
-                type: ChannelType.GuildText
+                type: ChannelType.GuildText,
+                parent: guildTicketData.ticketCategory,
+                permissionOverwrites: [
+                    {
+                        id: interaction.guildId as string,
+                        deny: ['ViewChannel']
+                    } , 
+                    {
+                        id: interaction.user.id,
+                        allow: [
+                            PermissionsBitField.Flags.ViewChannel,
+                            PermissionsBitField.Flags.SendMessages,
+                            PermissionsBitField.Flags.EmbedLinks,
+                            PermissionsBitField.Flags.AddReactions,
+                            PermissionsBitField.Flags.ReadMessageHistory
+                        ]
+                    }
+                ]
             }).then(channel => {
-                channel.setParent(`${guildTicketData.ticketCategory}`);
-                channel.permissionOverwrites.create(interaction.guild?.roles.everyone.id as string, { ViewChannel: false, SendMessages: false, });
-                channel.permissionOverwrites.create(interaction.user.id, { ViewChannel: true, SendMessages: true, AttachFiles: true, SendVoiceMessages: true, EmbedLinks: true, AddReactions: true, UseExternalEmojis: true, ReadMessageHistory: true });
                 guildTicketData.ticketRoles.split(",").forEach(role => {
-                    channel.permissionOverwrites.create(role, { ViewChannel: true, UseApplicationCommands: true, ManageChannels: true, ManageMessages: true, ReadMessageHistory: true })
-                })
+                    channel.permissionOverwrites.set([{id: role}]);
+                });
                 return channel;
             })
             const ticketEmbed = new EmbedBuilder()
@@ -25,7 +39,12 @@ export async function execute(interaction: ButtonInteraction) {
                 .setFooter({ text: "Grumbot", iconURL: interaction.client.user.displayAvatarURL() });
             await createdTicketChannel?.send({
                 embeds: [ticketEmbed]
-            })
+            });
+            await interaction.reply({
+                content: `Ticket Created Successfully <#${createdTicketChannel?.id}>`,
+                ephemeral: true,
+                components: []
+            });
         } catch (err) {
             interaction.reply({
                 content: "Unable to create ticket!",
