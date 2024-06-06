@@ -47,7 +47,6 @@ client.on("guildCreate", async (guild: Guild) => {
  */
 client.on("interactionCreate", async (interaction) => {
     if (interaction.isCommand()) events.interactionCreate.execute(interaction);
-    else if (interaction.isButton()) events.buttonAction.execute(interaction);
 });
 
 /**
