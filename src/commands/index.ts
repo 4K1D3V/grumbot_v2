@@ -22,6 +22,7 @@ import * as tictactoe from "./fun/tictactoe"
 import * as minesweeper from "./fun/minesweeper"
 import * as twozerofoureight from "./fun/twozerofoureight"
 import * as slots from "./fun/slots";
+import * as snake from "./fun/snake"
 
 export const commands = {
     ping, 
@@ -47,6 +48,7 @@ export const commands = {
     tictactoe,
     minesweeper,
     twozerofoureight,
-    slots
+    slots,
+    snake
 };
 
