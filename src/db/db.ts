@@ -13,15 +13,17 @@ export var connection = mysql2.createConnection(connectionConfig);
 
 function handleDisconnet() {
     connection = mysql2.createConnection(connectionConfig);
-    console.log("DB Reconnected!")
+    connection.connect((err) => {
+        if (err) setTimeout(handleDisconnet, 2000);
+    });
+    connection.on("error", (err) => {
+        console.log("DB Connection Closed. Attempting Reconnect!");
+        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+            handleDisconnet();
+        }
+    })
 }
 
-connection.on("error", (err) => {
-    console.log("DB Connection Closed. Attempting Reconnect!");
-    // if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-    //     handleDisconnet();
-    // }
-    handleDisconnet()
-})
+handleDisconnet();
 
 export default connection;
