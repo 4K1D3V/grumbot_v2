@@ -18,9 +18,10 @@ function handleDisconnet() {
 
 connection.on("error", (err) => {
     console.log("DB Connection Closed. Attempting Reconnect!");
-    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-        handleDisconnet();
-    }
+    // if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+    //     handleDisconnet();
+    // }
+    handleDisconnet()
 })
 
 export default connection;
