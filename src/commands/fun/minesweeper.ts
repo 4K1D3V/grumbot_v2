@@ -4,7 +4,6 @@ import { Minesweeper } from "discord-gamecord";
 export const data = new SlashCommandBuilder()
     .setName("minesweeper")
     .setDescription("Play a Minesweeper Game")
-    .setDMPermission(false)
 
 export async function execute(interaction: ChatInputCommandInteraction) {
     const Game = new Minesweeper({
