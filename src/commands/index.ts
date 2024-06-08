@@ -19,7 +19,8 @@ import * as minecraft from "./fun/minecraft";
 import * as help from "./utility/help";
 import * as gemini from "./fun/gemini"
 import * as tictactoe from "./fun/tictactoe"
-import * as minesweepr from "./fun/minesweeper"
+import * as minesweeper from "./fun/minesweeper"
+import * as twozerofoureight from "./fun/twozerofoureight"
 
 export const commands = {
     ping, 
@@ -43,6 +44,7 @@ export const commands = {
     help,
     gemini,
     tictactoe,
-    minesweepr
+    minesweeper,
+    twozerofoureight
 };
 
