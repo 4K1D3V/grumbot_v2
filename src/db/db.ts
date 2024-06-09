@@ -1,12 +1,13 @@
-import mysql2 from "mysql2";
+import mysql2, { ConnectionOptions } from "mysql2";
 import dbConfig from "./db.config";
 
-const connectionConfig = {
+const connectionConfig: ConnectionOptions = {
     host: dbConfig.HOST,
     user: dbConfig.USER,
     password: dbConfig.PASSWORD,
     database: dbConfig.DATABASE,
-    port: 12435
+    port: 12435,
+    connectTimeout: 180
 }
 
 export var connection = mysql2.createConnection(connectionConfig);
