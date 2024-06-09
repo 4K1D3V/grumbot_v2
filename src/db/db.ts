@@ -33,7 +33,7 @@ function keepAlive() {
             if (err) console.log(`Keep alive query failed! - ${err}`)
             else console.log(`Keep alive query success!`)
         });
-    }, 10_000);
+    }, 900_000);
 }
 
 handleDisconnet();
