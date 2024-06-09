@@ -18,6 +18,11 @@ import * as mutelist from "./staff/mutelist";
 import * as minecraft from "./fun/minecraft";
 import * as help from "./utility/help";
 import * as gemini from "./fun/gemini"
+import * as tictactoe from "./fun/tictactoe"
+import * as minesweeper from "./fun/minesweeper"
+import * as slots from "./fun/slots";
+import * as snake from "./fun/snake"
+import * as flood from "./fun/flood"
 
 export const commands = {
     ping, 
@@ -39,6 +44,11 @@ export const commands = {
     mutelist,
     minecraft,
     help,
-    gemini
+    gemini,
+    tictactoe,
+    minesweeper,
+    slots,
+    snake,
+    flood
 };
 
