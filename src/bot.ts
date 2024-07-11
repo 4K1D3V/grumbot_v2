@@ -13,7 +13,7 @@ const client = new Client({
  * Event fired once, when the client is ready
  */
 client.once("ready", async () => {
-    console.log("Discord bot is ready! 🤖");
+    console.log("Core Bot Is Ready!! 🤖");
     await updateGuildMaps();
     const guildCount = getTotalGuilds();
     const memberCount = getTotalUsers();
@@ -27,7 +27,7 @@ client.once("ready", async () => {
         client.user?.setPresence({
             status: "online",
             activities: [
-                newActivity
+                I am Bot.
             ]
         })
 
