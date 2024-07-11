@@ -14,7 +14,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         .setFooter({ text: `${banlist?.size} banned users on ${interaction.guild?.name}` })
         .setTimestamp(new Date());
     if (banlist?.size === 0) {
-        banEmbed.addFields({ name: "No banned users", value: "There are no banned users on this server." });
+        banEmbed.addFields({ name: "No banned users", value: "There are no banned users on this server. GG's" });
     } else {
         banlist?.forEach((user) => {
             banEmbed.addFields({ name: `${user.user.tag}`, value: `${user.reason ? user.reason : "No reason provided."}` });
